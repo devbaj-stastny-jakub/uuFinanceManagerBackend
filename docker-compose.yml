@@ -1,27 +1,29 @@
 version: "3.9"
 
 services:
-  mongo_db:
-    container_name: db_container
-    image: mongo:latest
-    restart: always
-    volumes:
-      - mongo_db:/data/db
-
-  api:
-    container_name: api_container
-    build: .
+  database:
+    container_name: database-service-container
+    build:
+      context: ./database-service
     ports:
-      - "3001:3000"
+      - "3002:3002"
     volumes:
-      - .:/app
-    environment:
-      PORT: 3000
-      MONGODB_URI: mongodb://mongo_db:27017
-      DB_NAME: my_db
-      NAME: JacobLucky
-    depends_on:
-      - mongo_db
+      - ./database-service:/app
 
-volumes:
-  mongo_db: {}
+  businesslogic:
+    container_name: businesslogic-service-container
+    build:
+      context: ./businesslogic-service
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./businesslogic-service:/app
+
+  file:
+    container_name: file-service-container
+    build:
+      context: ./file-service
+    ports:
+      - "3003:3003"
+    volumes:
+      - ./file-service:/app
