@@ -4,7 +4,7 @@ const router = express.Router()
 
 //? /transaction/list
 router.get("/list", (_req, _res)=>{
-    const transactionsList = transactionController.list()
+    const transactionsList = transactionController.list(_req, _res)
     _res.json(transactionsList)
 })
 
