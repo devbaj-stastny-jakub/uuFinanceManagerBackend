@@ -5,10 +5,9 @@ const listModel = {
     type: "object",
     properties: {
         limit: {
-            type: "number",
-            minimum: 1
+            type: "string",
         },
-        householdId: {
+        parentId: {
             type: "string",
             maxLength: 24,
             minLength: 24

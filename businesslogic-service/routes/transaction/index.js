@@ -3,9 +3,9 @@ const transactionController = require("../../controllers/transaction")
 const router = express.Router()
 
 //? /transaction/list
-router.get("/list", (_req, _res)=>{
-    const transactionsList = transactionController.list(_req, _res)
-    _res.json(transactionsList)
+router.get("/list", async (_req, _res)=>{
+    const transactionsList = await transactionController.list(_req, _res)
+    _res.send(transactionsList)
 })
 
 //? /transaction/:id

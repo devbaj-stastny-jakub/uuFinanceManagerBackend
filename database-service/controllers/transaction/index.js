@@ -18,16 +18,16 @@ class TransactionController {
         }
     }
     async list(_req, _res) {
-        const data = _req.body
         const filter = {}
-        if(data.parentId) filter.parentId = data.parentId
+        if(_req.query.parentId) filter.parentId = _req.query.parentId
         try {
             const result = await client
                 .db(config.database.name)
                 .collection(config.database.collection.transactions)
-                .find(filter).limit(data.limit ? data.limit : 0).toArray()
+                .find(filter).limit(_req.query.limit ? parseInt(_req.query.limit) : 0).toArray()
             return result;
         } catch (exception) {
+            console.debug(exception)
             _res.status(500).send(exception)
         }
     }
