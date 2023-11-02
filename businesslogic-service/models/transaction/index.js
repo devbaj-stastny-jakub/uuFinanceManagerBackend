@@ -16,8 +16,26 @@ const listModel = {
     additionalProperties: false
 }
 
+const createModel = {
+    type: "object",
+    properties: {
+        limit: {
+            type: "string",
+        },
+        parentId: {
+            type: "string",
+            maxLength: 24,
+            minLength: 24
+        }
+    },
+    additionalProperties: false
+}
+
 module.exports = {
     listModel: {
         validate: ajv.compile(listModel),
+    },
+    createModel: {
+        validate: ajv.compile(createModel),
     }
 }

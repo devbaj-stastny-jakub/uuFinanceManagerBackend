@@ -10,7 +10,7 @@ class TransactionController {
                 return _res.status(400).json(transactionValidator.listModel.validate.errors)
             }
             const list = await databaseService.transaction.list(data.limit, data.parentId)
-            return list;
+            return _res.send(list);
         } catch (exception) {
             console.log(exception)
             _res.status(500).send(exception)
