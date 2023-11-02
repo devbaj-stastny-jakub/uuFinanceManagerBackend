@@ -12,7 +12,7 @@ class TransactionController {
                 .findOne({
                     _id: new ObjectId(id)
                 })
-            return result;
+            return _res.send(result)
         } catch (exception) {
             _res.status(500).send(exception)
         }
@@ -25,7 +25,7 @@ class TransactionController {
                 .db(config.database.name)
                 .collection(config.database.collection.transactions)
                 .find(filter).limit(_req.query.limit ? parseInt(_req.query.limit) : 0).toArray()
-            return result;
+            return _res.send(result)
         } catch (exception) {
             console.debug(exception)
             _res.status(500).send(exception)
@@ -38,7 +38,7 @@ class TransactionController {
                 .db(config.database.name)
                 .collection(config.database.collection.transactions)
                 .insertOne(data)
-            return result
+            return _res.send(result)
         } catch (exception) {
             _res.status(500).send(exception)
         }
@@ -58,7 +58,7 @@ class TransactionController {
             if(result.matchedCount === 0) {
                 return _res.status(400).send({message: "There is not transaction with given id..."})
             }
-            return result
+            return _res.send(result)
         } catch (exception) {
             _res.status(500).send(exception)
         }
@@ -75,7 +75,7 @@ class TransactionController {
             if(result.deletedCount === 0) {
                 return _res.status(400).send({message: "There is not transaction with given id..."})
             }
-            return result
+            return _res.send(result)
         } catch (exception) {
             _res.status(500).send(exception)
         }
