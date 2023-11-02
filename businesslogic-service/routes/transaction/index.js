@@ -4,8 +4,7 @@ const router = express.Router()
 
 //? /transaction/list
 router.get("/list", async (_req, _res)=>{
-    const transactionsList = await transactionController.list(_req, _res)
-    _res.send(transactionsList)
+    await transactionController.list(_req, _res)
 })
 
 //? /transaction/:id
