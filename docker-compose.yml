@@ -1,12 +1,24 @@
 version: "3.9"
 
 services:
+  mongo:
+    container_name: mongodb-container
+    image: mongo:latest
+    networks:
+      - network
+    ports:
+      - '27018:27017'
+    volumes:
+      - database-volume:/data/db
+
   database:
     container_name: database-service-container
     build:
       context: ./database-service
     ports:
       - "3002:3002"
+    networks:
+      - network
     volumes:
       - ./database-service:/app
 
@@ -16,6 +28,8 @@ services:
       context: ./businesslogic-service
     ports:
       - "3001:3001"
+    networks:
+      - network
     volumes:
       - ./businesslogic-service:/app
 
@@ -25,5 +39,14 @@ services:
       context: ./file-service
     ports:
       - "3003:3003"
+    networks:
+      - network
     volumes:
       - ./file-service:/app
+
+networks:
+  network:
+    driver: bridge
+
+volumes:
+  database-volume:
