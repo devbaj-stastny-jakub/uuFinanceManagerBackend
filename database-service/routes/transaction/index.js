@@ -3,23 +3,18 @@ const router = express.Router()
 const transactionController = require("../../controllers/transaction")
 
 router.post("/create", async (_req, _res) => {
-    const createdTransaction = await transactionController.create(_req, _res)
-    _res.json(createdTransaction)
+    await transactionController.create(_req, _res)
 })
 router.get("/list", async (_req, _res) => {
-    const transactionsList = await transactionController.list(_req, _res)
-    _res.json(transactionsList)
+    await transactionController.list(_req, _res)
 })
 router.get("/:id", async (_req, _res) => {
-    const transaction = await transactionController.get(_req, _res)
-    _res.json(transaction)
+   await transactionController.get(_req, _res)
 })
 router.patch("/:id/update", async (_req, _res) => {
-    const updatedTransaction = await transactionController.patch(_req, _res)
-    _res.json(updatedTransaction)
+    await transactionController.patch(_req, _res)
 })
 router.delete("/:id/delete", async (_req, _res) => {
-    const deletedTransaction = await transactionController.delete(_req, _res)
-    _res.json(deletedTransaction)
+    await transactionController.delete(_req, _res)
 })
 module.exports = router
