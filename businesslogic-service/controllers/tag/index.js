@@ -1,4 +1,4 @@
-const transactionValidator = require("../../models/transaction")
+const tagValidator = require("../../models/tag")
 
 class TagController {
     async list(_req, _res){
