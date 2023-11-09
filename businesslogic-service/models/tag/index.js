@@ -1,7 +1,7 @@
 const Ajv = require("ajv")
 const ajv = new Ajv()
 
-let findIdModel = {
+const findIdModel = {
     type: "string",
     minLength: 24,
     maxLength: 24,
