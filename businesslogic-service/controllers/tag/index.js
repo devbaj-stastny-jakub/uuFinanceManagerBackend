@@ -8,7 +8,7 @@ class TagController {
             if(!valid) {
                 return _res.status(400).json(tagValidator.listModel.validate.errors)
             }
-            const list = await databaseService.transaction.list(data.limit, data.parentId)
+            const list = await databaseService.tag.list(data.limit, data.authorID, data.transactionID)
             return list;
         } catch (exception) {
             console.log(exception)
@@ -18,11 +18,11 @@ class TagController {
     async delete(_req, _res){
         try {
             const data = _req.query;
-            const valid = tagValidator.listModel.validate(data)
+            const valid = tagValidator.deleteModel.validate(data)
             if(!valid) {
-                return _res.status(400).json(tagValidator.listModel.validate.errors)
+                return _res.status(400).json(tagValidator.deleteModel.validate.errors)
             }
-            const list = await databaseService.transaction.list(data.limit, data.parentId)
+            const list = await databaseService.tag.list(data)
             return list;
         } catch (exception) {
             console.log(exception)
