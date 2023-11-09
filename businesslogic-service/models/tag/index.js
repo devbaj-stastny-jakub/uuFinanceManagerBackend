@@ -10,8 +10,9 @@ let findIdModel = {
 const listModel = {
     type: "object",
     properties: {
-        limit: {
+        tagName: {
             type: "string",
+            minLength: 1
         },
         authorID: {
             type: "string",
