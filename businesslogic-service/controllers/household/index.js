@@ -1,5 +1,5 @@
 // importovat databaseService
-// importovat householdValidator
+const householdValidator = require("../../models/household");
 const householdValidator = require("../../models/household");
 
 class HouseholdController {

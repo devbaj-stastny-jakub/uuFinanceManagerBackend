@@ -27,6 +27,11 @@ const createModel = {
         ownerID: {
             type: "string",
             minLength: 1,
+        id: { 
+            type: "string",
+            maxLength: 24,
+            minLength: 24
+        },   
         },
         membersIDs: {
             type: "array",
@@ -53,6 +58,11 @@ const updateModel = {
         maxLength: 255,
         minLength: 1
       },
+      id: { 
+        type: "string",
+        maxLength: 24,
+        minLength: 24
+     },   
       ownerID: {
         type: "string",
         maxLength: 24,
