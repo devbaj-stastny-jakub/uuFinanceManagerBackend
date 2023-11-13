@@ -60,6 +60,20 @@ class HouseholdController {
             _res.status(500).send(exception)
         }
     }
+    async AddMemberHousehold (_req, _res) {
+        try {
+            const data = _req.body
+            const valid = householdValidator.addMemberModel.validate(data)
+            if(!valid) {
+                return _res.status(400).json(householdValidator.addMemberModel.validate.errors)
+            }
+            const household = databaseService.household.addMember(data.id, data.memberID)
+            return _res.send(household);
+        } catch (exception) {
+            console.log(exception)
+            _res.status(500).send(exception)
+        }
+    }
 }
 
 module.exports = new HouseholdController()
