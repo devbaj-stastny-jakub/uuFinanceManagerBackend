@@ -1,38 +1,36 @@
 const express = require('express')
 const householdController = require("../../controllers/household")
 const router = express.Router()
-const { createModel, updateModel, listModel, deleteModel } = require("../../models/household")
 
 
-// Ještě napojit routy na správné controllery
-router.get("/list", async (_req, _res)=>{
-    await householdController.list(_req, _res)
-    _res.json(householdList)
+router.get("list", async (_req, _res) => {
+    const householdList = await householdController.list(_req, _res);
+    _res.status(200).json({ data: householdList });
 });
 
-router.get("/:id", async (_req, _res)=>{
-    await householdController.get(_req, _res)
-    _res.json(householdID)
+router.get("/:id", async (_req, _res) => {
+    const householdId = await householdController.get(_req, _res);
+    _res.status(200).json({ data: householdId });
 });
 
-router.patch("/:id/patch", async (_req, _res)=>{
-    await householdController.patch(_req, _res)
-    _res.json({message: "working!"})
+router.patch("/:id", async (_req, _res) => {
+    const householdId = await householdController.patch(_req, _res);
+    _res.status(200).json({ data: householdId });
 });
 
-router.delete("/:id/delete", async (_req, _res)=>{
-    await householdController.delete(_req, _res)
-    _res.json({message: "working!"})
+router.delete("/:id", async (_req, _res) => {
+    const householdID = await householdController.delete(_req, _res);
+    _res.status(200).json({ data: householdID });
 });
 
-router.post("/create", async (_req, _res)=>{
-    await householdController.create(_req, _res)
-    _res.json({message: "working!"})
+router.post("/household", async (_req, _res) => {
+    await householdController.create(_req, _res);
+    _res.status(201).json({ message: 'Household created successfully' });
 });
 
-router.post("/AddMember", async (_req, _res)=>{
-    await householdController.AddMember(_req, _res)
-    _res.json({message: "working!"})
+router.post('/household/AddMember', async (_req, _res) => {
+    await householdController.AddMember(_req, _res);
+    _res.status(200).json({ message: 'Member added successfully' });
 });
 
-module.exports = router
+module.exports = router;
