@@ -8,18 +8,23 @@ router.get("/list", async (_req, _res)=>{
 })
 
 //? /transaction/:id
-router.get("/:id", (_req, _res)=>{
-    _res.json({message: "working!"})
+router.get("/:id", async (_req, _res)=>{
+    await transactionController.get(_req, _res)
+})
+
+//? /transaction/create
+router.post("/create", async (_req, _res)=>{
+    await transactionController.create(_req, _res)
 })
 
 //? /transaction/:id/patch
-router.patch("/:id/patch", (_req, _res)=>{
-    _res.json({message: "working!"})
+router.patch("/patch", async (_req, _res)=>{
+    await transactionController.update(_req, _res)
 })
 
 //? /transaction/:id/delete
-router.get("/:id/delete", (_req, _res)=>{
-    _res.json({message: "working!"})
+router.delete("/:id/delete", async (_req, _res)=>{
+    await transactionController.delete(_req, _res)
 })
 
 module.exports = router

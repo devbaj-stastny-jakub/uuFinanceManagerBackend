@@ -56,9 +56,15 @@ class TransactionController {
                     $set: data
                 })
             if(result.matchedCount === 0) {
-                return _res.status(400).send({message: "There is not transaction with given id..."})
+                return _res.status(400).send({errorMessages: [{message: "There is not transaction with given id..."}]})
             }
-            return _res.send(result)
+            const result2 = await client
+                .db(config.database.name)
+                .collection(config.database.collection.transactions)
+                .findOne({
+                    _id: new ObjectId(id)
+                })
+            return _res.send(result2)
         } catch (exception) {
             _res.status(500).send(exception)
         }
@@ -73,7 +79,7 @@ class TransactionController {
                     _id: new ObjectId(id)
                 })
             if(result.deletedCount === 0) {
-                return _res.status(400).send({message: "There is not transaction with given id..."})
+                return _res.status(400).send({errorMessages: [{message: "There is not transaction with given id..."}]})
             }
             return _res.send(result)
         } catch (exception) {
