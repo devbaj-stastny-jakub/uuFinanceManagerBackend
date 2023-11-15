@@ -1,7 +1,10 @@
 const databaseService = require("../../services/databaseService")
 const transactionValidator = require("../../models/transaction")
+const {responseErrorCodes, ErrorMessage} = require("../../errors")
 
 class TransactionController {
+    objectName = "transaction"
+
     async list(_req, _res) {
         try {
             const data = _req.query;
@@ -9,7 +12,12 @@ class TransactionController {
             if (!valid) {
                 return _res.status(400).json(transactionValidator.listModel.validate.errors)
             }
-            const list = await databaseService.transaction.list(data.limit, data.parentId)
+            const response = await databaseService.transaction.list(data.limit, data.parentId)
+            if(response.errorCode) {
+                const error = new ErrorMessage()
+                error.addErrorMessage(response.errorCode, this.objectName)
+                return _res.status(400).send(error.build())
+            }
             return _res.send(list);
         } catch (e) {
             _res.status(500).send(e)
@@ -25,14 +33,23 @@ class TransactionController {
             }
             //todo: parenta hledat v domácnostech a spočících cílech
             const parentExists = await databaseService.transaction.get(data.parentId)
-            if (!parentExists) {
-                return _res.status(400).send({errorMessages: [{message: `Parent with id [${data}] does not exist`}]})
+            if(!parentExists) {
+                const error = new ErrorMessage()
+                error.addErrorMessage(responseErrorCodes.NOT_FOUND, this.objectName, data.parentId)
+                return _res.status(400).send(error.build())
             }
-            if (parentExists.errorMessages) {
-                return _res.status(400).send(parentExists)
+            if(parentExists.errorCode) {
+                const error = new ErrorMessage()
+                error.addErrorMessage(parentExists.errorCode, this.objectName)
+                return _res.status(400).send(error.build())
             }
             //todo: Doplnit id autentifikovaného uživatele
             const transaction = await databaseService.transaction.create(data, "0YETAEBJMWBCIPL6HU8LHAW2")
+            if(transaction.errorCode) {
+                const error = new ErrorMessage()
+                error.addErrorMessage(transaction.errorCode, this.objectName)
+                return _res.status(400).send(error.build())
+            }
             return _res.send(transaction)
         } catch (e) {
             _res.status(500).send(e)
@@ -47,11 +64,15 @@ class TransactionController {
                 return _res.status(400).json(transactionValidator.identifierModel.validate.errors)
             }
             const transaction = await databaseService.transaction.get(data)
-            if (!transaction) {
-                return _res.status(400).send({errorMessages: [{message: `Transaction with id [${data.parentId}] does not exist`}]})
+            if(!transaction) {
+                const error = new ErrorMessage()
+                error.addErrorMessage(responseErrorCodes.NOT_FOUND, this.objectName, data)
+                return _res.status(400).send(error.build())
             }
-            if (transaction.errorMessages) {
-                return _res.status(400).send(transaction)
+            if(transaction.errorCode) {
+                const error = new ErrorMessage()
+                error.addErrorMessage(transaction.errorCode, this.objectName)
+                return _res.status(400).send(error.build())
             }
             return _res.send(transaction)
         } catch (e) {
@@ -67,8 +88,10 @@ class TransactionController {
                 return _res.status(400).json(transactionValidator.identifierModel.validate.errors)
             }
             const response = await databaseService.transaction.delete(data)
-            if (response.errorMessages) {
-                return _res.status(400).send(response)
+            if(response.errorCode) {
+                const error = new ErrorMessage()
+                error.addErrorMessage(response.errorCode, this.objectName, data)
+                return _res.status(400).send(error.build())
             }
             return _res.send()
         } catch (e) {
@@ -84,8 +107,10 @@ class TransactionController {
                 return _res.status(400).json(transactionValidator.updateModel.validate.errors)
             }
             const response = await databaseService.transaction.update(data.id, {...data, id: undefined})
-            if (response.errorMessages) {
-                return _res.status(400).send(response)
+            if(response.errorCode) {
+                const error = new ErrorMessage()
+                error.addErrorMessage(response.errorCode, this.objectName, data.id)
+                return _res.status(400).send(error.build())
             }
             return _res.send(response)
         } catch(e) {
