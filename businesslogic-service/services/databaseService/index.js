@@ -1,8 +1,10 @@
 const databaseServiceTransaction = require("./transaction")
+const databaseServiceHousehold = require("./household")
 class DatabaseService {
-    constructor(_databaseServiceTransaction) {
+    constructor(_databaseServiceTransaction, _databaseServiceHousehold) {
         this.transaction = _databaseServiceTransaction
+        this.household = _databaseServiceHousehold
     }
 }
 
-module.exports = new DatabaseService(databaseServiceTransaction)
+module.exports = new DatabaseService(databaseServiceTransaction, databaseServiceHousehold)

@@ -53,7 +53,7 @@ class HouseholdController {
             if (parentExists.errorMessages) {
                 return _res.status(400).send(parentExists)
             }
-            const household = databaseService.household.create(data, "0YETAEBJMWBCIPL6HU8LHAW2")
+            const household = databaseService.household.create(data.name, data.ownerID, data.membersIDs, data.balance)
             return _res.send(household);
         } catch (exception) {
             _res.status(500).send(exception)
@@ -66,7 +66,7 @@ class HouseholdController {
             if(!valid) {
                 return _res.status(400).json(householdValidator.updateModel.validate.errors)
             }
-            const response = databaseService.household.update(data.id, {...data, id: undefined}) 
+            const response = databaseService.household.update(data.name, data.ownerID, data.membersIDs, data.balance, data.parentId) 
             if (response.errorMessages) {
                 return _res.status(400).send(response)
             }
