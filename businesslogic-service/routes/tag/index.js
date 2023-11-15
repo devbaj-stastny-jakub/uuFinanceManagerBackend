@@ -5,9 +5,6 @@ const router = express.Router()
 router.get("/:id", async (_req, _res) => {
     await tagController.get(_req, _res);
 });
-router.get("/list", async (_req, _res) => {
-     await tagController.list(_req, _res);
-});
 router.post("/create", async (_req, _res) => {
     await tagController.create(_req, _res);
 });

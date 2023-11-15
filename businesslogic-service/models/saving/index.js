@@ -7,23 +7,6 @@ const findIdModel = {
     maxLength: 24,
 };
 
-const listModel = {
-    type: "object",
-    properties: {
-        savingName: {
-            type: "string",
-            minLength: 1
-        },
-        householdID: {
-            type: "string",
-                minLength: 24,
-                maxLength: 24
-        },
-    },
-    required: ["householdID"],
-    additionalProperties: false
-};
-
 const createModel = {
     type: "object",
     properties: {
