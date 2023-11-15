@@ -1,4 +1,5 @@
 const tagValidator = require("../../models/tag")
+const databaseService = require("../../services/databaseService")
 
 
 
@@ -24,7 +25,7 @@ class TagController {
             if(!valid) {
                 return _res.status(400).json(tagValidator.createModel.validate.errors)
             }
-            const create = databaseService.tag.create(data.authorID, data.transactionID, data.tagName,)
+            const create = await databaseService.tag.create(data)
             return _res.send(create);
         } catch (exception) {
             console.log(exception)
