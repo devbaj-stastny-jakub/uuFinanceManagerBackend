@@ -1,5 +1,7 @@
 const tagValidator = require("../../models/tag")
 
+
+
 class TagController {
     async list(_req, _res){
         try {
@@ -15,6 +17,34 @@ class TagController {
             _res.status(500).send(exception)
         }
     }
+    async create(_req, _res) {
+        try {
+            const data = _req.body;
+            const valid = tagValidator.createModel.validate(data)
+            if(!valid) {
+                return _res.status(400).json(tagValidator.createModel.validate.errors)
+            }
+            const create = databaseService.tag.create(data.authorID, data.transactionID, data.tagName,)
+            return _res.send(create);
+        } catch (exception) {
+            console.log(exception)
+            _res.status(500).send(exception)
+        }
+    }
+    async update (_req, _res) {
+        try {
+            const data = _req.body
+            const valid = tagValidator.updateModel.validate(data)
+            if(!valid) {
+                return _res.status(400).json(tagValidator.updateModel.validate.errors)
+            }
+            const update = await databaseService.tag.update(data.authorID, data.transactionID, data.tagName,)
+            return update;
+        } catch (exception) {
+            console.log(exception)
+            _res.status(500).send(exception)
+        }
+    }
     async delete(_req, _res){
         try {
             const data = _req.query;
@@ -22,8 +52,8 @@ class TagController {
             if(!valid) {
                 return _res.status(400).json(tagValidator.deleteModel.validate.errors)
             }
-            const list = await databaseService.tag.list(data)
-            return list;
+            const deleted = await databaseService.tag.delete(data)
+            return deleted;
         } catch (exception) {
             console.log(exception)
             _res.status(500).send(exception)
