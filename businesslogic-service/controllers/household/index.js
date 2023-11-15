@@ -1,6 +1,5 @@
-// importovat databaseService
 const householdValidator = require("../../models/household");
-const householdValidator = require("../../models/household");
+const databaseService = require("../../services/databaseService");
 
 class HouseholdController {
     async list (_req, _res) {
@@ -10,59 +9,91 @@ class HouseholdController {
             if(!valid) {
                 return _res.status(400).json(householdValidator.listModel.validate.errors)
             }
-            const list = databaseService.household.list(data.limit, data.parentId) 
+            const list = databaseService.household.list(data.limit, data.id) 
             return _res.send(list); 
         } catch (exception) {
-            console.log(exception)
             _res.status(500).send(exception)
         }
         
     }
-    async createHousehold (_req, _res) {
+
+    async get (_req, _res) {
+        try {
+            const data = _req.params.id;
+            const valid = householdValidator.identifierModel.validate(data)
+            if(!valid) {
+                return _res.status(400).json(householdValidator.identifierModel.validate.errors)
+            }
+            const household = await databaseService.household.get(data)
+            if (!household) {
+                return _res.status(400).send({errorMessages: [{message: `Household with id [${data.id}] does not exist`}]})
+            }
+            if (household.errorMessages) {
+                return _res.status(400).send(household)
+            }
+            return _res.send(household);
+        }
+        catch (e) {
+            _res.status(500).send(e)
+        }
+
+    }  
+
+    async create (_req, _res) {
         try {
             const data = _req.body;
             const valid = householdValidator.createModel.validate(data)
             if(!valid) {
                 return _res.status(400).json(householdValidator.createModel.validate.errors)
             }
-            const household = databaseService.household.create(data.name, data.ownerID, data.membersIDs, data.balance) // patří tam i data.timestamp (createdAt)?
+            const parentExists = await databaseService.household.get(data.parentId)
+            if (!parentExists) {
+                return _res.status(400).send({errorMessages: [{message: `Parent with id [${data}] does not exist`}]})
+            }
+            if (parentExists.errorMessages) {
+                return _res.status(400).send(parentExists)
+            }
+            const household = databaseService.household.create(data, "0YETAEBJMWBCIPL6HU8LHAW2")
             return _res.send(household);
         } catch (exception) {
-            console.log(exception)
             _res.status(500).send(exception)
         }
     }
-    async updateHousehold (_req, _res) {
+    async update (_req, _res) {
         try {
             const data = _req.body
             const valid = householdValidator.updateModel.validate(data)
             if(!valid) {
                 return _res.status(400).json(householdValidator.updateModel.validate.errors)
             }
-            const household = databaseService.household.update(data.id, data.name, data.ownerID, data.membersIDs, data.balance, data.timestamp) // patří tam i data.timestamp (updatedAt)?
-            return _res.send(household);
-        } catch (exception) {
-            console.log(exception)
-            _res.status(500).send(exception)
-        }
-    }
-    async deleteHousehold (_req, _res) {
-        try {
-            const data = _req.query
-            const valid = householdValidator.deleteModel.validate(data)
-            if(!valid) {
-                return _res.status(400).json(householdValidator.deleteModel.validate.errors)
+            const response = databaseService.household.update(data.id, {...data, id: undefined}) 
+            if (response.errorMessages) {
+                return _res.status(400).send(response)
             }
-            const household = databaseService.household.delete(data.id)
-            return _res.send(household);
+            return _res.send(response);
         } catch (exception) {
-            console.log(exception)
             _res.status(500).send(exception)
         }
     }
-    async AddMemberHousehold (_req, _res) {
+    async delete (_req, _res) {
         try {
-            const data = _req.body
+            const data = _req.params.id
+            const valid = householdValidator.identifierModel.validate(data)
+            if(!valid) {
+                return _res.status(400).json(householdValidator.identifierModel.validate.errors)
+            }
+            const response = databaseService.household.delete(data)
+            if (response.errorMessages) {
+                return _res.status(400).send(response)
+            }
+            return _res.send();
+        } catch (exception) {
+            _res.status(500).send(exception)
+        }
+    }
+   /* async AddMember (_req, _res) { // Řešení pro přidání člena do domácnosti má být řešeno v domácnosti?
+        try {
+            const data = _req.params.id
             const valid = householdValidator.addMemberModel.validate(data)
             if(!valid) {
                 return _res.status(400).json(householdValidator.addMemberModel.validate.errors)
@@ -74,6 +105,6 @@ class HouseholdController {
             _res.status(500).send(exception)
         }
     }
-}
+}*/}
 
 module.exports = new HouseholdController()

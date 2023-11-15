@@ -21,18 +21,19 @@ const createModel = {
     properties: {
         name: { 
             type: "string",
-            maxLength: 255,
-            minLength: 1
+            maxLength: 24,
+            minLength: 24
          },
         ownerID: {
             type: "string",
-            minLength: 1,
+            maxLength: 24,
+            minLength: 24
+        },
         id: { 
             type: "string",
             maxLength: 24,
             minLength: 24
         },   
-        },
         membersIDs: {
             type: "array",
             items: {
@@ -40,14 +41,19 @@ const createModel = {
                 minLength: 24,
                 maxLength: 24
             },
-        maxItems: 10, // max 10 members?
         },
         balance: {
             type: "number",
         },
     },
-    required: ["name", "ownerID", "membersIDs", "balance"],
+    required: ["name", "ownerID", "id"],
     additionalProperties: false
+}
+
+const identifierModel = {
+    type: "string",
+    maxLength: 24,
+    minLength: 24
 }
 
 const updateModel = {
@@ -75,26 +81,16 @@ const updateModel = {
           maxLength: 24,
           minLength: 24
         },
-        maxItems: 10 // max 10 members?
       },
       balance: {
         type: "number",
       },
     },
+    required : ["id"],
     additionalProperties: false
   };
 
-const deleteModel = {
-    type: "object",
-    properties: {
-        id: { 
-            type: "string",
-            maxLength: 24,
-            minLength: 24
-         },   
-    },
-    additionalProperties: false
-}
+// přidání addMember modelu?
 
 module.exports = {
     listModel: {
@@ -106,7 +102,7 @@ module.exports = {
     updateModel: {
         validate: ajv.compile(updateModel),
     },
-    deleteModel: {
-        validate: ajv.compile(deleteModel),
+    identifierModel: {
+        validate: ajv.compile(identifierModel),
     }
 }

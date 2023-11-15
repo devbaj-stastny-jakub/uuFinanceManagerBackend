@@ -1,5 +1,6 @@
 const express = require('express')
 const transactionRouter = require("./routes/transaction")
+const householdRouter = require("./routes/household")
 
 const app = express()
 const port = 3001
@@ -11,6 +12,7 @@ app.get('/', (req, res) => {
     res.send('Business logic service!')
 })
 
+app.use("/household", householdRouter)
 app.use("/transaction", transactionRouter)
 
 app.listen(port, () => {
