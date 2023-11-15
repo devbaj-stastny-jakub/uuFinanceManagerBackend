@@ -1,5 +1,6 @@
 const express = require('express')
 const transactionRouter = require("./routes/transaction")
+const {handleError} = require("./middlewares")
 
 const app = express()
 const port = 3001
@@ -12,6 +13,9 @@ app.get('/', (req, res) => {
 })
 
 app.use("/transaction", transactionRouter)
+
+
+app.use(handleError)
 
 app.listen(port, () => {
     console.log(`Business logic service is listening on port ${port}`)

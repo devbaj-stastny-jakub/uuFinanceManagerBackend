@@ -1,4 +1,5 @@
 const Ajv = require("ajv")
+const {ThrowableError, buildErrorMessage, responseErrorCodes} = require("../../errors");
 const ajv = new Ajv()
 const identifierModel = {
     type: "string",
@@ -79,17 +80,25 @@ const updateModel = {
     additionalProperties: false
 }
 
+const handleValidation = (model, data)=>{
+    const validate = ajv.compile(model)
+    const valid = validate(data)
+    if(!valid) {
+        throw ThrowableError(buildErrorMessage(responseErrorCodes.VALIDATION_ERROR, validate.errors[0].message), undefined, 400)
+    }
+}
+
 module.exports = {
     listModel: {
-        validate: ajv.compile(listModel),
+        validate: (data)=>{handleValidation(listModel, data)},
     },
     createModel: {
-        validate: ajv.compile(createModel),
+        validate: (data)=>{handleValidation(createModel, data)},
     },
     updateModel: {
-        validate: ajv.compile(updateModel),
+        validate: (data)=>{handleValidation(updateModel, data)},
     },
     identifierModel: {
-        validate: ajv.compile(identifierModel)
+        validate: (data)=>{handleValidation(identifierModel, data)},
     }
 }
