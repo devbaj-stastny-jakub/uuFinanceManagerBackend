@@ -12,7 +12,7 @@ router.post("/create", async (_req, _res) => {
     await tagController.create(_req, _res);
 });
 router.patch("/:id/update", async (_req, _res) => {
-  await tagController.patch(_req, _res);
+  await tagController.update(_req, _res);
 
 });
 

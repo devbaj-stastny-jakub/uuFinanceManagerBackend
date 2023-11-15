@@ -40,7 +40,7 @@ class SavingController {
                 return _res.status(400).json(savingValidator.updateModel.validate.errors)
             }
             const update = await databaseService.saving.update(data)
-            return update;
+            return _res.send(update);
         } catch (exception) {
             console.log(exception)
             _res.status(500).send(exception)

@@ -47,8 +47,6 @@ const updateModel = {
         savingName: {type: "string", minLength: 1},
         goal: {type: "integer"},
         description:{type: "string", minLength: 1},
-        householdID:{type: "string", minLength: 24, maxLength: 24},
-        currentBalance: {type: "integer"}
     },
     additionalProperties: false
 };

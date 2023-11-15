@@ -12,7 +12,7 @@ class TagController {
                 return _res.status(400).json(tagValidator.listModel.validate.errors)
             }
             const list = await databaseService.tag.list(data)
-            return list;
+            return _res.send(list);
         } catch (exception) {
             console.log(exception)
             _res.status(500).send(exception)
@@ -26,7 +26,7 @@ class TagController {
                 return _res.status(400).json(tagValidator.findIdModel.validate.errors)
             }
             const tag = await databaseService.tag.get(data)
-            return tag;
+            return _res.send(tag);
         } catch (exception) {
             console.log(exception)
             _res.status(500).send(exception)
@@ -55,7 +55,7 @@ class TagController {
             }
             const update = await databaseService.tag.update(data)
             console.log("update", update)
-            return update;
+            return _res.send(update);
         } catch (exception) {
             console.log(exception)
             _res.status(500).send(exception)
@@ -69,7 +69,7 @@ class TagController {
                 return _res.status(400).json(tagValidator.deleteModel.validate.errors)
             }
             const deleted = await databaseService.tag.delete(data)
-            return deleted;
+            return _res.send(deleted);
         } catch (exception) {
             console.log(exception)
             _res.status(500).send(exception)
