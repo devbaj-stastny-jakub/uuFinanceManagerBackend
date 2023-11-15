@@ -18,6 +18,20 @@ class TagController {
             _res.status(500).send(exception)
         }
     }
+    async get(_req, _res) {
+        try {
+            const data = _req.params.id
+            const valid = tagValidator.findIdModel.validate(data)
+            if (!valid) {
+                return _res.status(400).json(tagValidator.findIdModel.validate.errors)
+            }
+            const tag = await databaseService.tag.get(data)
+            return tag;
+        } catch (exception) {
+            console.log(exception)
+            _res.status(500).send(exception)
+        }
+    }
     async create(_req, _res) {
         try {
             const data = _req.body;

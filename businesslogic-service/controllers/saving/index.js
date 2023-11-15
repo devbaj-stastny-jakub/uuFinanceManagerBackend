@@ -25,8 +25,7 @@ class SavingController {
             if(!valid) {
                 return _res.status(400).json(savingValidator.createModel.validate.errors)
             }
-            const create = databaseService.saving.create(data)
-            console.log("create", create)
+            const create = await databaseService.saving.create(data)
             return _res.send(create);
         } catch (exception) {
             console.log(exception)
