@@ -25,8 +25,9 @@ class SavingController {
             if(!valid) {
                 return _res.status(400).json(savingValidator.createModel.validate.errors)
             }
-            const saving = databaseService.saving.create(data.savingName, data.goal, data.description, data.householdID,)
-            return _res.send(saving);
+            const create = databaseService.saving.create(data)
+            console.log("create", create)
+            return _res.send(create);
         } catch (exception) {
             console.log(exception)
             _res.status(500).send(exception)
@@ -39,7 +40,7 @@ class SavingController {
             if(!valid) {
                 return _res.status(400).json(savingValidator.updateModel.validate.errors)
             }
-            const update = await databaseService.saving.update(data.savingName, data.goal, data.description, data.householdID,data.currentBalance,)
+            const update = await databaseService.saving.update(data)
             return update;
         } catch (exception) {
             console.log(exception)

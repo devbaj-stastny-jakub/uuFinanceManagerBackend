@@ -39,7 +39,8 @@ class TagController {
             if(!valid) {
                 return _res.status(400).json(tagValidator.updateModel.validate.errors)
             }
-            const update = await databaseService.tag.update(data.authorID, data.transactionID, data.tagName,)
+            const update = await databaseService.tag.update(data)
+            console.log("update", update)
             return update;
         } catch (exception) {
             console.log(exception)

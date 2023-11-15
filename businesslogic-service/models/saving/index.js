@@ -30,9 +30,9 @@ const createModel = {
         savingName: {type: "string", minLength: 1},
         goal: {type: "integer"},
         description:{type: "string", minLength: 1},
-        householdID:{type: "string", minLength: 24, maxLength: 24},
+        createdAt: {type: "string"},
     },
-    required: ["savingName", "goal", "description", "householdID",],
+    required: ["savingName", "goal", "description", "createdAt"],
     additionalProperties: false,
 };
 

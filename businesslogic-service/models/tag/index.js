@@ -46,10 +46,9 @@ const deleteModel = {
 const updateModel = {
     type: "object",
     properties: {
-        authorID: {type: "string", minLength: 24, maxLength: 24},
-        transactionID: {type: "string", minLength: 24, maxLength: 24},
         tagName: {type: "string", minLength: 1},
     },
+    required: ["tagName",],
     additionalProperties: false
 };
 

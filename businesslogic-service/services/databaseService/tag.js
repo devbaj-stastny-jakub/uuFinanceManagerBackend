@@ -11,13 +11,12 @@ class DatabaseServiceTag {
             createdAt: local,}
         return newTag
     }
-    async list(){
-        const list{
+    async update(data){
+        const updateTag = {
             id: "61e1554617f0e248baf15f42",
-                tagName: data.tagName,
-                createdAt: local,
-        }
-        return list
+            tagName: data.tagName,
+            createdAt: local,}
+        return updateTag
     }
 }
 

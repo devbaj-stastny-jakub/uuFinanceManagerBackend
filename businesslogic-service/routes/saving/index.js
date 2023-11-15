@@ -1,26 +1,24 @@
 const express = require("express");
+const savingController = require("../../controllers/saving")
 const router = express.Router()
 
 router.get("/:id", async (_req, _res) => {
-    const saving = await savingController.get(_req, _res);
-    _res.json(saving);
+   await savingController.get(_req, _res);
 });
 router.get("/list", async (_req, _res) => {
-    const savingList = await savingController.list(_req, _res);
-    _res.json(savingList);
+    await savingController.list(_req, _res);
 });
 router.post("/create", async (_req, _res) => {
-    const createdSaving = await savingController.create(_req, _res);
-    _res.json(createdSaving);
+    await savingController.create(_req, _res);
+
 });
 router.patch("/:id/update", async (_req, _res) => {
-    const updatedSaving = await savingController.patch(_req, _res);
-    _res.json(updatedSaving);
+    await savingController.patch(_req, _res);
 });
 
 router.delete("/:id/delete", async (_req, _res) => {
-    const deletedSaving = await savingController.delete(_req, _res);
-    _res.json(deletedSaving);
+   await savingController.delete(_req, _res);
+
 });
 
 
