@@ -13,7 +13,7 @@ router.post("/create", async (_req, _res) => {
 
 });
 router.patch("/:id/update", async (_req, _res) => {
-    await savingController.patch(_req, _res);
+    await savingController.update(_req, _res);
 });
 
 router.delete("/:id/delete", async (_req, _res) => {

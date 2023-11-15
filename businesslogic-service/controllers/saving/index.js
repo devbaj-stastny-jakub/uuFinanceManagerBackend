@@ -1,5 +1,6 @@
 const savingValidator = require("../../models/saving");
 const databaseService = require("../../services/databaseService")
+const tagValidator = require("../../models/tag");
 
 
 class SavingController {
@@ -10,13 +11,27 @@ class SavingController {
             if(!valid) {
                 return _res.status(400).json(savingValidator.listModel.validate.errors)
             }
-            const list = databaseService.saving.list(data.householdID, data.savingName)
+            const list = databaseService.saving.list(data)
             return _res.send(list);
         } catch (exception) {
             console.log(exception)
             _res.status(500).send(exception)
         }
 
+    }
+    async get(_req, _res) {
+        try {
+            const data = _req.params.id
+            const valid = savingValidator.findIdModel.validate(data)
+            if (!valid) {
+                return _res.status(400).json(savingValidator.findIdModel.validate.errors)
+            }
+            const saving = await databaseService.saving.get(data)
+            return _res.send(saving);
+        } catch (exception) {
+            console.log(exception)
+            _res.status(500).send(exception)
+        }
     }
     async create(_req, _res) {
         try {
@@ -54,7 +69,7 @@ class SavingController {
                 return _res.status(400).json(savingValidator.deleteModel.validate.errors)
             }
             const deleted = await databaseService.saving.delete(data)
-            return deleted;
+            return _res.send(deleted);
         } catch (exception) {
             console.log(exception)
             _res.status(500).send(exception)
