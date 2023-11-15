@@ -11,6 +11,14 @@ class DatabaseServiceTag {
             createdAt: local,}
         return newTag
     }
+    async list(){
+        const list{
+            id: "61e1554617f0e248baf15f42",
+                tagName: data.tagName,
+                createdAt: local,
+        }
+        return list
+    }
 }
 
 module.exports = new DatabaseServiceTag()

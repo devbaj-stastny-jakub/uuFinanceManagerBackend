@@ -11,7 +11,7 @@ class TagController {
             if(!valid) {
                 return _res.status(400).json(tagValidator.listModel.validate.errors)
             }
-            const list = await databaseService.tag.list(data.limit, data.authorID, data.transactionID)
+            const list = await databaseService.tag.list(data)
             return list;
         } catch (exception) {
             console.log(exception)
