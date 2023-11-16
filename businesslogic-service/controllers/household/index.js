@@ -11,7 +11,7 @@ class HouseholdController {
           .status(400)
           .json(householdValidator.listModel.validate.errors);
       }
-      const list = databaseService.household.list(data.limit, data.id);
+      const list = await databaseService.household.list(data.limit, data.id);
       return _res.send(list);
     } catch (exception) {
       _res.status(500).send(exception);
@@ -55,12 +55,7 @@ class HouseholdController {
           .status(400)
           .json(householdValidator.createModel.validate.errors);
       }
-      const household = databaseService.household.create(
-        data.name,
-        data.ownerID,
-        data.membersIDs,
-        data.balance
-      );
+      const household = await databaseService.household.create(data);
       return _res.send(household);
     } catch (exception) {
         console.log(exception)
@@ -76,18 +71,13 @@ class HouseholdController {
           .status(400)
           .json(householdValidator.updateModel.validate.errors);
       }
-      const response = databaseService.household.update(
-        data.name,
-        data.ownerID,
-        data.membersIDs,
-        data.balance,
-        data.parentId
-      );
+      const response = await databaseService.household.update(data);
       if (response.errorMessages) {
         return _res.status(400).send(response);
       }
       return _res.send(response);
     } catch (exception) {
+      console.log(exception);
       _res.status(500).send(exception);
     }
   }
