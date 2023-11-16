@@ -1,17 +1,21 @@
 const axios = require('axios');
 
 class DatabaseServiceHousehold {
-    async list(limit = undefined, parentId = undefined){
+    async list(limit = undefined){
         const mockListData = [
             {
                 id: "123456789012345678901234",
-                name: "Household Name",
-                ownerID: "someOwnerID",
-                membersIDs: ["memberID1", "memberID2"],
-                balance: 100.50
+                name: "Household 1",
             },
         ];
         return mockListData;
+    }
+    async create(data){
+        const mockCreateData = {
+            id: "123456789012345678901234",
+            name: data.name,
+        }
+        return mockCreateData;
     }
 }
 
