@@ -11,7 +11,7 @@ class SavingController {
             if(!valid) {
                 return _res.status(400).json(savingValidator.listModel.validate.errors)
             }
-            const list = databaseService.saving.list(data)
+            const list = await databaseService.saving.list(data)
             return _res.send(list);
         } catch (exception) {
             console.log(exception)
@@ -63,7 +63,7 @@ class SavingController {
     }
     async delete(_req, _res) {
         try {
-            const data = _req.query
+            const data = _req.params.id
             const valid = savingValidator.deleteModel.validate(data)
             if(!valid) {
                 return _res.status(400).json(savingValidator.deleteModel.validate.errors)

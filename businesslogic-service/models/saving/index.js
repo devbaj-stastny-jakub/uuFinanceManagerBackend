@@ -31,8 +31,11 @@ const createModel = {
         goal: {type: "integer"},
         description:{type: "string", minLength: 1},
         createdAt: {type: "string"},
+        updatedAt: {type: "string"},
+        currentBalance:{type: "integer"}
+
     },
-    required: ["savingName", "goal", "description", "createdAt"],
+    required: ["savingName", "goal", "description",],
     additionalProperties: false,
 };
 

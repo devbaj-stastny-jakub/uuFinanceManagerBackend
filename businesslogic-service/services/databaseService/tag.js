@@ -1,13 +1,13 @@
 const axios = require("axios");
 
 const date = new Date();
-const local = date.toLocaleString("cs-CZ")
+const timestamp = date.getTime()
 class DatabaseServiceTag {
     async create(data) {
         const newTag = {
             id: "61e1554617f0e248baf15f42",
             tagName: data.tagName,
-            createdAt: local,
+            createdAt: timestamp,
         }
         return newTag
     }
@@ -15,7 +15,8 @@ class DatabaseServiceTag {
         const updateTag = {
             id: "61e1554617f0e248baf15f42",
             tagName: name.tagName,
-            updatedAt: local}
+            createdAt:1700141782974,
+            updatedAt: timestamp}
         return updateTag
     }
     async get(){
@@ -25,10 +26,7 @@ class DatabaseServiceTag {
         return getTag
     }
     async delete(){
-        const deleteTag = {
-            id: "61e1554617f0e248baf15f42",
-            tagName: "Name",}
-        return deleteTag
+        return null
     }
 }
 

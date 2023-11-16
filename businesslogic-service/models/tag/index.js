@@ -7,15 +7,13 @@ const findIdModel = {
     maxLength: 24,
 };
 
-
-
 const createModel = {
     type: "object",
     properties: {
         tagName: {type: "string", minLength: 1},
         createdAt: {type: "string"},
     },
-    required: ["tagName","createdAt"],
+    required: ["tagName",],
     additionalProperties: false,
 };
 

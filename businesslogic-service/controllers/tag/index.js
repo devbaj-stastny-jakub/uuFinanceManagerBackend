@@ -49,7 +49,7 @@ class TagController {
     }
     async delete(_req, _res){
         try {
-            const data = _req.query;
+            const data = _req.params.id;
             const valid = tagValidator.deleteModel.validate(data)
             if(!valid) {
                 return _res.status(400).json(tagValidator.deleteModel.validate.errors)
