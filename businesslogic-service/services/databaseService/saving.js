@@ -10,7 +10,7 @@ class DatabaseServiceSaving {
         return getSaving
     }
     async list(){
-        const listTags = [
+        const listSaving = [
             {id: "61e1554617f0e248baf15f42",
                 name:"Save1"},
             { id: "61e1554617f0e248baf15f43",
@@ -18,7 +18,7 @@ class DatabaseServiceSaving {
             { id: "61e1554617f0e248baf15f44",
                 name:"Save3",},
         ]
-        return listTags
+        return listSaving
     }
     async create(data){
         const newSaving = {

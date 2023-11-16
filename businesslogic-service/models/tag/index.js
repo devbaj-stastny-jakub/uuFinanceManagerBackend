@@ -6,6 +6,26 @@ const findIdModel = {
     minLength: 24,
     maxLength: 24,
 };
+const listModel = {
+    type: "object",
+    properties: {
+        tagName: {
+            type: "string",
+            minLength: 1
+        },
+        authorID: {
+            type: "string",
+            maxLength: 24,
+            minLength: 24
+        },
+        transactionID: {
+            type: "string",
+            maxLength: 24,
+            minLength: 24
+        }
+    },
+    additionalProperties: false
+};
 
 const createModel = {
     type: "object",
@@ -35,8 +55,11 @@ module.exports = {
     findIdModel: {
         validate: ajv.compile(findIdModel)
     },
+    listModel:{
+        validate: ajv.compile(listModel)
+    },
     createModel: {
-        validate: ajv.compile(createModel),
+        validate: ajv.compile(createModel)
     },
     deleteModel: {
         validate: ajv.compile(deleteModel)

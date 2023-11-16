@@ -4,6 +4,20 @@ const databaseService = require("../../services/databaseService")
 
 
 class TagController {
+    async list(_req, _res){
+        try {
+            const data = _req.query;
+            const valid = tagValidator.listModel.validate(data)
+            if(!valid) {
+                return _res.status(400).json(tagValidator.listModel.validate.errors)
+            }
+            const list = await databaseService.tag.list(data)
+            return _res.send(list);
+        } catch (exception) {
+            console.log(exception)
+            _res.status(500).send(exception)
+        }
+    }
     async get(_req, _res) {
         try {
             const data = _req.params.id

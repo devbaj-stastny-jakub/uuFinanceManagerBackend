@@ -2,6 +2,9 @@ const express = require("express");
 const tagController = require("../../controllers/tag")
 const router = express.Router()
 
+router.get("/list", async (_req, _res) => {
+    await tagController.list(_req, _res);
+});
 router.get("/:id", async (_req, _res) => {
     await tagController.get(_req, _res);
 });
