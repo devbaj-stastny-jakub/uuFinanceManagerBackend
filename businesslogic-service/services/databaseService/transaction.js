@@ -12,8 +12,8 @@ class DatabaseServiceTransaction {
                 },
             })
             return result.data
-        } catch (exception) {
-            return {errorMessages: [{message: "Nepodařilo se zíkat seznam", exception: exception}]}
+        } catch (e) {
+            return e.response.data
         }
     }
 
@@ -24,8 +24,8 @@ class DatabaseServiceTransaction {
                 url: "http://database-service-container:3002/transaction/" + transactionId + "/delete",
             })
             return result.data
-        } catch (exception) {
-            return {errorMessages: [{message: "Položku se nepodařilo smazat", exception: exception}]}
+        } catch (e) {
+            return e.response.data
         }
     }
 
@@ -37,8 +37,8 @@ class DatabaseServiceTransaction {
                 data: data
             })
             return result.data
-        } catch (exception) {
-            return {errorMessages: [{message: "Položku se nepodařilo upravit", exception: exception}]}
+        } catch (e) {
+            return e.response.data
         }
     }
 
@@ -49,8 +49,8 @@ class DatabaseServiceTransaction {
                 url: "http://database-service-container:3002/transaction/" + transactionId,
             })
             return result.data
-        } catch (exception) {
-            return {errorMessages: [{message: "Položku se nepodařilo načíst", exception: exception}]}
+        } catch (e) {
+            return e.response.data
         }
     }
 
@@ -62,8 +62,8 @@ class DatabaseServiceTransaction {
                 data: {...data, creatorId}
             })
             return result.data
-        } catch (exception) {
-            return {errorMessages: [{message: "Položku se nepodařilo vytvořit", exception: exception}]}
+        } catch (e) {
+            return e.response.data
         }
     }
 }
