@@ -1,6 +1,9 @@
 const express = require('express')
 const transactionRouter = require("./routes/transaction")
+const tagRouter = require("./routes/tag")
+const savingRouter = require("./routes/saving")
 const {handleError} = require("./middlewares")
+
 
 const app = express()
 const port = 3001
@@ -13,6 +16,8 @@ app.get('/', (req, res) => {
 })
 
 app.use("/transaction", transactionRouter)
+app.use("/tag", tagRouter)
+app.use("/saving", savingRouter)
 
 
 app.use(handleError)
