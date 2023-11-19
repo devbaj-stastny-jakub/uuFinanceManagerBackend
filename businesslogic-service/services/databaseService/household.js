@@ -6,7 +6,7 @@ class DatabaseServiceHousehold {
             {
                 id: "123456789012345678901234",
                 name: "Household 1",
-                balance: "14563",
+                balance: "0",
                 ownerID: "55y1554617f0e248bam1hj50",
                 membersIDs: ["66y1554617f0e248bam1uy60","88y1554617f0e248bam1lp80"],
             },
@@ -53,8 +53,8 @@ class DatabaseServiceHousehold {
     async get(data){
         const mockGetData = {
             id: "123456789012345678901234",
-            name: data.name,
-            balance: 19293,
+            name: data.name ? data.name : "Household 1",
+            balance: 0,
             ownerID: "55y1554617f0e248bam1hj50",
             membersIDs: ["66y1554617f0e248bam1uy60","88y1554617f0e248bam1lp80"],
         }
