@@ -3,24 +3,28 @@ const transactionController = require("../../controllers/transaction")
 const router = express.Router()
 
 //? /transaction/list
-router.get("/list", async (_req, _res)=>{
-    const transactionsList = await transactionController.list(_req, _res)
-    _res.send(transactionsList)
+router.get("/list", async (_req, _res, next)=>{
+    await transactionController.list(_req, _res, next)
 })
 
 //? /transaction/:id
-router.get("/:id", (_req, _res)=>{
-    _res.json({message: "working!"})
+router.get("/:id", async (_req, _res, next)=>{
+    await transactionController.get(_req, _res, next)
+})
+
+//? /transaction/create
+router.post("/create", async (_req, _res, next)=>{
+    await transactionController.create(_req, _res, next)
 })
 
 //? /transaction/:id/patch
-router.patch("/:id/patch", (_req, _res)=>{
-    _res.json({message: "working!"})
+router.patch("/patch", async (_req, _res, next)=>{
+    await transactionController.update(_req, _res, next)
 })
 
 //? /transaction/:id/delete
-router.get("/:id/delete", (_req, _res)=>{
-    _res.json({message: "working!"})
+router.delete("/:id/delete", async (_req, _res, next)=>{
+    await transactionController.delete(_req, _res, next)
 })
 
 module.exports = router
