@@ -20,7 +20,7 @@ class TagController {
     }
     async list(_req, _res) {
         const filter = {}
-        if (_req.query.parentId) filter.parentId = _req.query.parentId
+        if (_req.query.transactionID) filter.transactionsID = _req.query.transactionID
         try {
             const result = await client
                 .db(config.database.name)
