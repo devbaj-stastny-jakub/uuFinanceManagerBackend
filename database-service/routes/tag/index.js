@@ -1,12 +1,15 @@
 const express = require('express')
 const router = express.Router()
 const tagController = require("../../controllers/tag")
-const transactionController = require("../../controllers/transaction");
+
 
 
 
 router.post("/create", async (_req, _res) => {
     await tagController.create(_req, _res)
+})
+router.get("/list", async (_req, _res) => {
+    await tagController.list(_req, _res)
 })
 router.get("/:id", async (_req, _res) => {
     await tagController.get(_req, _res)
