@@ -36,5 +36,31 @@ class TagController {
             _res.status(500).send({errorCode: responseErrorCodes.UNKNOWN_ERROR})
         }
     }
+
+    async patch(_req, _res) {
+        const data = _req.body
+        const id = _req.params.id
+        try {
+            const result = await client
+                .db(config.database.name)
+                .collection(config.database.collection.tag)
+                .updateOne({
+                    _id: new ObjectId(id)
+                }, {
+                    $set: data
+                })
+            if (result.matchedCount === 0) {
+                return _res.status(400).send({errorCode: responseErrorCodes.NOT_FOUND})
+            }
+            const result2 = await client
+                .db(config.database.name)
+                .collection(config.database.collection.tag)
+                .findOne({
+                    _id: new ObjectId(id)
+                })
+            return _res.send(result2)
+        } catch (exception) {
+            _res.status(500).send({errorCode: responseErrorCodes.UNKNOWN_ERROR})        }
+    }
 }
 module.exports = new TagController()
