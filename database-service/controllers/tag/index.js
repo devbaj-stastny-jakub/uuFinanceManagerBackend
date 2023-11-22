@@ -18,6 +18,19 @@ class TagController {
         } catch (exception) {
             _res.status(500).send({errorCode: responseErrorCodes.UNKNOWN_ERROR})        }
     }
+    async list(_req, _res) {
+        const filter = {}
+        if (_req.query.parentId) filter.parentId = _req.query.parentId
+        try {
+            const result = await client
+                .db(config.database.name)
+                .collection(config.database.collection.tag)
+                .find(filter).limit(_req.query.limit ? parseInt(_req.query.limit) : 0).toArray()
+            return _res.send(result)
+        } catch (exception) {
+            _res.status(500).send({errorCode: responseErrorCodes.UNKNOWN_ERROR})
+        }
+    }
     async create(_req, _res) {
         const data = _req.body
         try {
