@@ -5,7 +5,19 @@ const {responseErrorCodes} = require("../../errors")
 
 class TagController {
 
-
+    async get(_req, _res) {
+        const id = _req.params.id
+        try {
+            const result = await client
+                .db(config.database.name)
+                .collection(config.database.collection.tag)
+                .findOne({
+                    _id: new ObjectId(id)
+                })
+            return _res.send(result)
+        } catch (exception) {
+            _res.status(500).send({errorCode: responseErrorCodes.UNKNOWN_ERROR})        }
+    }
     async create(_req, _res) {
         const data = _req.body
         try {
