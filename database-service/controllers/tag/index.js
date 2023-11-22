@@ -75,5 +75,21 @@ class TagController {
         } catch (exception) {
             _res.status(500).send({errorCode: responseErrorCodes.UNKNOWN_ERROR})        }
     }
+    async delete(_req, _res) {
+        const id = _req.params.id
+        try {
+            const result = await client
+                .db(config.database.name)
+                .collection(config.database.collection.tag)
+                .deleteOne({
+                    _id: new ObjectId(id)
+                })
+            if (result.deletedCount === 0) {
+                return _res.status(400).send({errorCode: responseErrorCodes.NOT_FOUND})
+            }
+            return _res.send(result)
+        } catch (exception) {
+            _res.status(500).send({errorCode: responseErrorCodes.UNKNOWN_ERROR})        }
+    }
 }
 module.exports = new TagController()
