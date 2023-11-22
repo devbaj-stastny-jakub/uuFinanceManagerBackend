@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const tagController = require("../../controllers/tag")
+const transactionController = require("../../controllers/transaction");
 
 
 
@@ -16,5 +17,8 @@ router.get("/:id", async (_req, _res) => {
 })
 router.patch("/:id/update", async (_req, _res) => {
     await tagController.patch(_req, _res)
+})
+router.delete("/:id/delete", async (_req, _res) => {
+    await tagController.delete(_req, _res)
 })
 module.exports = router
