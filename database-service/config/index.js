@@ -4,7 +4,8 @@ const config = {
         name: "mydb",
         collection: {
             transactions: "transactions",
-            households: "households"
+            households: "households",
+            tag: "tag"
         }
     }
 }

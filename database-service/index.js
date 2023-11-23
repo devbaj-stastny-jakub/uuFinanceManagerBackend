@@ -1,6 +1,7 @@
 const express = require('express')
 const transactionRouter = require("./routes/transaction")
 const householdRouter = require("./routes/household")
+const tagRouter = require("./routes/tag")
 const {connectToMongoDB, closeMongoDBConnection} = require("./mongodb-connection")
 const app = express()
 const port = 3002
@@ -16,6 +17,7 @@ app.get('/', (req, res) => {
 
 app.use("/transaction", transactionRouter)
 app.use("/household", householdRouter)
+app.use("/tag", tagRouter)
 
 app.listen(port, () => {
     console.log(`Database service is listening on port ${port}`)
