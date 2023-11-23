@@ -3,7 +3,8 @@ const config = {
         uri: "mongodb://mongodb-container:27017/mydb",
         name: "mydb",
         collection: {
-            transactions: "transactions"
+            transactions: "transactions",
+            households: "households"
         }
     }
 }
