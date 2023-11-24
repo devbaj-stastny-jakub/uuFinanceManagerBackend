@@ -67,7 +67,7 @@ class SavingController {
             }
             const result2 = await client
                 .db(config.database.name)
-                .collection(config.database.collection.tag)
+                .collection(config.database.collection.saving)
                 .findOne({
                     _id: new ObjectId(id)
                 })
