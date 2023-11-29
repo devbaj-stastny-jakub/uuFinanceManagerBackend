@@ -11,7 +11,7 @@ router.get("/list", async (_req, _res) => {
 router.get("/:id", async (_req, _res) => {
     await householdController.get(_req, _res)
 })
-router.patch("/:id/update", async (_req, _res) => {
+router.patch("/:id/patch", async (_req, _res) => {
     await householdController.patch(_req, _res)
 })
 router.delete("/:id/delete", async (_req, _res) => {
