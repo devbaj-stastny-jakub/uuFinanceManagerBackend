@@ -2,6 +2,7 @@ const Ajv = require("ajv")
 const {ThrowableError, buildErrorMessage, responseErrorCodes} = require("../../errors");
 const ajv = new Ajv()
 
+
 const findIdModel = {
     type: "string",
     minLength: 24,
@@ -32,7 +33,6 @@ const createModel = {
     type: "object",
     properties: {
         tagName: {type: "string", minLength: 1},
-        createdAt: {type: "string"},
     },
     required: ["tagName",],
     additionalProperties: false,

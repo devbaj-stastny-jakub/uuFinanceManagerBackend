@@ -1,13 +1,13 @@
 const axios = require("axios");
 
 class DatabaseServiceTag {
-    async list(transactionID) {
+    async list(tagID) {
         try {
             const result = await axios({
                 method: "GET",
                 url: "http://database-service-container:3002/tag/list",
                 params: {
-                    transactionID:transactionID
+                    transactionID:tagID
                 },
             })
             return result.data
