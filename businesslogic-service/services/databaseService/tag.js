@@ -1,46 +1,69 @@
 const axios = require("axios");
 
-const date = new Date();
-const timestamp = date.getTime()
 class DatabaseServiceTag {
-    async create(data) {
-        const newTag = {
-            id: "61e1554617f0e248baf15f42",
-            tagName: data.tagName,
-            createdAt: timestamp,
+    async list(transactionID) {
+        try {
+            const result = await axios({
+                method: "GET",
+                url: "http://database-service-container:3002/tag/list",
+                params: {
+                    transactionID:transactionID
+                },
+            })
+            return result.data
+        } catch (e) {
+            return e.response.data
         }
-        return newTag
     }
-    async list(){
-        const listTags = [
-            {id: "61e1554617f0e248baf15f42",
-                name:"Tag1",
-                createdAt:1700141782974},
-            { id: "61e1554617f0e248baf15f43",
-                name:"Tag2",
-                createdAt:1700141782974},
-            { id: "61e1554617f0e248baf15f44",
-                name:"Tag3",
-                createdAt:1700141782974},
-        ]
-        return listTags
+
+    async delete(tagId) {
+        try {
+            const result = await axios({
+                method: "DELETE",
+                url: "http://database-service-container:3002/tag/" + tagId + "/delete",
+            })
+            return result.data
+        } catch (e) {
+            return e.response.data
+        }
     }
-    async update(name){
-        const updateTag = {
-            id: "61e1554617f0e248baf15f42",
-            tagName: name.tagName,
-            createdAt:1700141782974,
-            updatedAt: timestamp}
-        return updateTag
+
+    async update(tagId, data) {
+        try {
+            const result = await axios({
+                method: "PATCH",
+                url: "http://database-service-container:3002/tag/" + tagId + "/update",
+                data: data
+            })
+            return result.data
+        } catch (e) {
+            return e.response.data
+        }
     }
-    async get(){
-        const getTag = {
-            id: "61e1554617f0e248baf15f42",
-            tagName: "Name",}
-        return getTag
+
+    async get(tagId) {
+        try {
+            const result = await axios({
+                method: "GET",
+                url: "http://database-service-container:3002/tag/" + tagId,
+            })
+            return result.data
+        } catch (e) {
+            return e.response.data
+        }
     }
-    async delete(){
-        return null
+
+    async create(data, authorId) {
+        try {
+            const result = await axios({
+                method: "POST",
+                url: "http://database-service-container:3002/tag/create",
+                data: {...data, authorId}
+            })
+            return result.data
+        } catch (e) {
+            return e.response.data
+        }
     }
 }
 
