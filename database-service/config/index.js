@@ -5,7 +5,9 @@ const config = {
         collection: {
             transactions: "transactions",
             households: "households",
-            tag: "tag"
+            tag: "tag",
+            saving: "saving"
+
         }
     }
 }
