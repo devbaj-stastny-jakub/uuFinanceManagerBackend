@@ -7,7 +7,7 @@ const listModel = {
     limit: {
       type: "string",
     },
-    parentId: {
+    id: {
       type: "string",
       maxLength: 24,
       minLength: 24,
