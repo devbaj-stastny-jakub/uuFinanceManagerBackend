@@ -9,7 +9,7 @@ class DatabaseService {
         this.transaction = _databaseServiceTransaction
         this.tag = _databaseServiceTag
         this.saving = _databaseServiceSaving
-      this.household = _databaseServiceHousehold
+        this.household = _databaseServiceHousehold
     }
 }
 

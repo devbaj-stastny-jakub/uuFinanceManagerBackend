@@ -39,16 +39,22 @@ const createModel = {
 };
 
 const deleteModel = {
-    type: "string",
-    minLength: 24,
-    maxLength: 24,
+    type: "object",
+    properties: {
+        id: {
+            type: "string",
+            minLength: 24,
+            maxLength: 24,
+        }
+    }
 };
 const updateModel = {
     type: "object",
     properties: {
+        id: {type: "string", minLength: 24, maxLength: 24},
         tagName: {type: "string", minLength: 1},
     },
-    required: ["tagName",],
+    required: ["id"],
     additionalProperties: false
 };
 const handleValidation = (model, data)=>{

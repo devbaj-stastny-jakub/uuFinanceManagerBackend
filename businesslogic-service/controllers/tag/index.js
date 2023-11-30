@@ -36,9 +36,6 @@ class TagController {
         try {
             const data = _req.body
             tagValidator.createModel.validate(data)
-            const tagExists = await databaseService.tag.get(data)
-            if (!tagExists) throw ThrowableError(buildErrorMessage(responseErrorCodes.NOT_FOUND, this.objectName, data), undefined, 400)
-            if (tagExists.errorCode) throw ThrowableError(buildErrorMessage(tagExists.errorCode, this.objectName, data), undefined, 400)
             const tag = await databaseService.tag.create(data)
             if (tag.errorCode) throw new Error(undefined, {cause: buildErrorMessage(tag.errorCode, this.objectName)})
             return _res.send(tag)
@@ -51,7 +48,7 @@ class TagController {
         try {
             const data = _req.body
             tagValidator.updateModel.validate(data)
-            const response = await databaseService.transaction.update(data.id, {...data, id: undefined})
+            const response = await databaseService.tag.update(data.id, {...data, id: undefined})
             if (response.errorCode) throw ThrowableError(buildErrorMessage(response.errorCode, this.objectName, data.id), undefined, 400)
             return _res.send(response)
         } catch (e) {
@@ -60,10 +57,10 @@ class TagController {
     }
     async delete(_req, _res, next) {
         try {
-            const data = _req.params.id
+            const data = _req.body
             tagValidator.deleteModel.validate(data)
-            const response = await databaseService.tag.delete(data)
-            if (response.errorCode) throw ThrowableError(buildErrorMessage(response.errorCode, this.objectName, data), undefined, 400)
+            const response = await databaseService.tag.delete(data.id)
+            if (response.errorCode) throw ThrowableError(buildErrorMessage(response.errorCode, this.objectName, data.id), undefined, 400)
             return _res.send()
         } catch (e) {
             next(e)
