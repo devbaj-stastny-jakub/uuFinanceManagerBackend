@@ -2,10 +2,6 @@ const express = require('express')
 const router = express.Router()
 const savingController = require("../../controllers/saving")
 
-
-
-
-
 router.post("/create", async (_req, _res) => {
     await savingController.create(_req, _res)
 })

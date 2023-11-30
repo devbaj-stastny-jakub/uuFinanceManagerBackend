@@ -12,7 +12,7 @@ router.post("/create", async (_req, _res) => {
     await savingController.create(_req, _res);
 
 });
-router.patch("/:id/update", async (_req, _res) => {
+router.patch("/update", async (_req, _res) => {
     await savingController.update(_req, _res);
 });
 

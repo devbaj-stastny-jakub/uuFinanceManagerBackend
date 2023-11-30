@@ -19,8 +19,9 @@ class SavingController {
             _res.status(500).send({errorCode: responseErrorCodes.UNKNOWN_ERROR})        }
     }
     async list(_req, _res) {
-        const filter = {}
-        if (_req.query.householdID) filter.householdID = _req.query.householdID
+        const filter = {
+            householdId: _req.query.householdId
+        }
         try {
             const result = await client
                 .db(config.database.name)
