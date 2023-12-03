@@ -1,64 +1,73 @@
 const axios = require('axios');
 
 class DatabaseServiceHousehold {
-    async list(limit = undefined, data){
-        const mockListData = [
-            {
-                id: "123456789012345678901234",
-                name: "Household 1",
-                balance: "0",
-                ownerID: "55y1554617f0e248bam1hj50",
-                membersIDs: ["66y1554617f0e248bam1uy60","88y1554617f0e248bam1lp80"],
-            },
-            {
-                id: "123456789012345678901235",
-                name: "Household 2",
-                balance: "14563",
-                ownerID: "55y1554617f0e248bam1hj50",
-                membersIDs: ["66y1554617f0e248bam1uy60","88y1554617f0e248bam1lp80"],
-            },
-            {
-                id: "123456789012345678901236",
-                name: "Household 3",
-                balance: "14563",
-                ownerID: "55y1554617f0e248bam1hj50",
-                membersIDs: ["66y1554617f0e248bam1uy60","88y1554617f0e248bam1lp80"],
-            },
-        ];
-        return mockListData;
-    }
-    async create(data){
-        const mockCreateData = {
-            id: "123456789012345678901234",
-            name: data.name,
-            balance: 0,
-            ownerID: "55y1554617f0e248bam1hj50",
-            membersIDs: [],
+    async list(limit = undefined, userId, data){
+        try{
+            const result = await axios({
+                method: "GET",
+                url: "http://database-service-container:3002/household/list",
+                params: {
+                    limit: limit,
+                    userId: userId
+                },
+                data: data
+            })
+            return result.data;
+        } catch (e) {
+            return e.response.data;
         }
-        return mockCreateData;
     }
-    async update(data){
-        const mockUpdateData = {
-            id: "123456789012345678901234",
-            name: data.name ? data.name : "Household 1",
-            balance: data.balance ? data.balance : 0,
-            ownerID: data.ownerID ? data.ownerID : "55y1554617f0e248bam1hj50",
-            membersIDs: data.membersIDs ? data.membersIDs : ["66y1554617f0e248bam1uy60","88y1554617f0e248bam1lp80"],
+    async create(data, creatorId){
+        try {
+            const result = await axios({
+                method: "POST",
+                url: "http://database-service-container:3002/household/create",
+                data: {...data, ownerID: creatorId}
+            })
+            return result.data;
         }
-        return mockUpdateData;
-    }
-    async delete(data){
-        return null;
-    }
-    async get(data){
-        const mockGetData = {
-            id: "123456789012345678901234",
-            name: data.name ? data.name : "Household 1",
-            balance: 0,
-            ownerID: "55y1554617f0e248bam1hj50",
-            membersIDs: ["66y1554617f0e248bam1uy60","88y1554617f0e248bam1lp80"],
+        catch (e) {
+            return e.response.data;
         }
-        return mockGetData;
+    }
+    async update(data, householdId){
+        try {
+            const result = await axios({
+                method: "PATCH",
+                url: "http://database-service-container:3002/household/" + householdId + "/patch",
+                data: data
+            })
+            return result.data;
+        }
+        catch (e) {
+            return e.response.data;
+        }
+    }
+
+    async delete(householdId){
+        try {
+            const result = await axios({
+                method: "DELETE",
+                url: "http://database-service-container:3002/household/" + householdId + "/delete",
+            })
+            return result.data;
+        }
+        catch (e) {
+            return e.response.data;
+        }
+    }
+    async get(householdId){
+        try {
+            const result = await axios({
+                method: "GET",
+                url: "http://database-service-container:3002/household/" + householdId,
+            })             
+            console.log("test x")
+            return result.data;
+        }
+        catch (e) {
+            return e.response.data;
+        }
     }
 }
 
