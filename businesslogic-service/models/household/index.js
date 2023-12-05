@@ -1,5 +1,6 @@
 const Ajv = require("ajv");
 const ajv = new Ajv();
+const {ThrowableError, buildErrorMessage, responseErrorCodes} = require("../../errors");
 
 const listModel = {
   type: "object",
@@ -69,17 +70,25 @@ const updateModel = {
 
 // přidání addMember modelu?
 
+const handleValidation = (model, data)=>{
+  const validate = ajv.compile(model)
+  const valid = validate(data)
+  if(!valid) {
+      throw ThrowableError(buildErrorMessage(responseErrorCodes.VALIDATION_ERROR, validate.errors[0].message), undefined, 400)
+  }
+}
+
 module.exports = {
   listModel: {
-    validate: ajv.compile(listModel),
-  },
-  createModel: {
-    validate: ajv.compile(createModel),
-  },
-  updateModel: {
-    validate: ajv.compile(updateModel),
-  },
-  identifierModel: {
-    validate: ajv.compile(identifierModel),
-  },
-};
+    validate: (data)=>{handleValidation(listModel, data)},
+},
+createModel: {
+    validate: (data)=>{handleValidation(createModel, data)},
+},
+updateModel: {
+    validate: (data)=>{handleValidation(updateModel, data)},
+},
+identifierModel: {
+    validate: (data)=>{handleValidation(identifierModel, data)},
+}
+}
