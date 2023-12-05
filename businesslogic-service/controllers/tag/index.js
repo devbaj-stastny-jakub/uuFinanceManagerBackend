@@ -1,78 +1,69 @@
 const tagValidator = require("../../models/tag")
 const databaseService = require("../../services/databaseService")
+const {responseErrorCodes, ErrorMessage, buildErrorMessage, ThrowableError} = require("../../errors")
+
+
 
 
 
 class TagController {
-    async list(_req, _res){
+    objectName = "tag"
+
+    async list(_req, _res, next) {
         try {
             const data = _req.query;
-            const valid = tagValidator.listModel.validate(data)
-            if(!valid) {
-                return _res.status(400).json(tagValidator.listModel.validate.errors)
-            }
-            const list = await databaseService.tag.list(data)
-            return _res.send(list);
-        } catch (exception) {
-            console.log(exception)
-            _res.status(500).send(exception)
+            tagValidator.listModel.validate(data)
+            const response = await databaseService.tag.list(data)
+            if (response.errorCode) throw ThrowableError(buildErrorMessage(response.errorCode, this.objectName), undefined, 400)
+            return _res.send(response);
+        } catch (e) {
+            next(e)
         }
     }
-    async get(_req, _res) {
+    async get(_req, _res, next) {
         try {
             const data = _req.params.id
-            const valid = tagValidator.findIdModel.validate(data)
-            if (!valid) {
-                return _res.status(400).json(tagValidator.findIdModel.validate.errors)
-            }
+            tagValidator.identifierModel.validate(data)
             const tag = await databaseService.tag.get(data)
-            return _res.send(tag);
-        } catch (exception) {
-            console.log(exception)
-            _res.status(500).send(exception)
+            if (!tag) throw ThrowableError(buildErrorMessage(responseErrorCodes.NOT_FOUND, this.objectName, data), undefined, 400)
+            if (tag.errorCode) throw ThrowableError(buildErrorMessage(tag.errorCode, this.objectName, data), undefined, 400)
+            return _res.send(tag)
+        } catch (e) {
+            next(e)
         }
     }
-    async create(_req, _res) {
-        try {
-            const data = _req.body;
-            const valid = tagValidator.createModel.validate(data)
-            if(!valid) {
-                return _res.status(400).json(tagValidator.createModel.validate.errors)
-            }
-            const create = await databaseService.tag.create(data)
-            return _res.send(create);
-        } catch (exception) {
-            console.log(exception)
-            _res.status(500).send(exception)
-        }
-    }
-    async update (_req, _res) {
+    async create(_req, _res, next) {
         try {
             const data = _req.body
-            const valid = tagValidator.updateModel.validate(data)
-            if(!valid) {
-                return _res.status(400).json(tagValidator.updateModel.validate.errors)
-            }
-            const update = await databaseService.tag.update(data)
-            console.log("update", update)
-            return _res.send(update);
-        } catch (exception) {
-            console.log(exception)
-            _res.status(500).send(exception)
+            tagValidator.createModel.validate(data)
+            const tag = await databaseService.tag.create(data)
+            if (tag.errorCode) throw new Error(undefined, {cause: buildErrorMessage(tag.errorCode, this.objectName)})
+            return _res.send(tag)
+        } catch (e) {
+            next(e)
         }
     }
-    async delete(_req, _res){
+
+    async update(_req, _res, next) {
         try {
-            const data = _req.params.id;
-            const valid = tagValidator.deleteModel.validate(data)
-            if(!valid) {
-                return _res.status(400).json(tagValidator.deleteModel.validate.errors)
-            }
-            const deleted = await databaseService.tag.delete(data)
-            return _res.send(deleted);
-        } catch (exception) {
-            console.log(exception)
-            _res.status(500).send(exception)
+            const data = _req.body
+            tagValidator.updateModel.validate(data)
+            const response = await databaseService.tag.update(data.id, {...data, id: undefined})
+            if (response.errorCode) throw ThrowableError(buildErrorMessage(response.errorCode, this.objectName, data.id), undefined, 400)
+            return _res.send(response)
+        } catch (e) {
+            next(e)
+        }
+    }
+    async delete(_req, _res, next) {
+        try {
+            const data = _req.body
+            tagValidator.deleteModel.validate(data)
+            const response = await databaseService.tag.delete(data.id)
+            if (response.errorCode) throw ThrowableError(buildErrorMessage(response.errorCode, this.objectName, data.id), undefined, 400)
+            return _res.send()
+        } catch (e) {
+            next(e)
         }
     }
 }

@@ -14,28 +14,33 @@ const listModel = {
             type: "string",
             minLength: 1
         },
-        householdID: {
+        householdId: {
             type: "string",
-                minLength: 24,
-                maxLength: 24
+            minLength: 24,
+            maxLength: 24
         },
     },
-    required: ["householdID"],
+    required: ["householdId"],
     additionalProperties: false
 };
 
 const createModel = {
     type: "object",
     properties: {
+        householdId: {
+            type: "string",
+            minLength: 24,
+            maxLength: 24
+        },
         savingName: {type: "string", minLength: 1},
         goal: {type: "integer"},
-        description:{type: "string", minLength: 1},
+        description: {type: "string", minLength: 1},
         createdAt: {type: "string"},
         updatedAt: {type: "string"},
-        currentBalance:{type: "integer"}
+        currentBalance: {type: "integer"}
 
     },
-    required: ["savingName", "goal", "description",],
+    required: ["savingName", "goal", "description", "householdId"],
     additionalProperties: false,
 };
 
@@ -47,10 +52,16 @@ const deleteModel = {
 const updateModel = {
     type: "object",
     properties: {
+        id: {
+            type: "string",
+            minLength: 24,
+            maxLength: 24
+        },
         savingName: {type: "string", minLength: 1},
         goal: {type: "integer"},
-        description:{type: "string", minLength: 1},
+        description: {type: "string", minLength: 1},
     },
+    required: ["id"],
     additionalProperties: false
 };
 

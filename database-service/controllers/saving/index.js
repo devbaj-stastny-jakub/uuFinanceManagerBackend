@@ -3,14 +3,14 @@ const config = require("../../config")
 const {ObjectId} = require("mongodb");
 const {responseErrorCodes} = require("../../errors")
 
-class TagController {
+class SavingController {
 
     async get(_req, _res) {
         const id = _req.params.id
         try {
             const result = await client
                 .db(config.database.name)
-                .collection(config.database.collection.tag)
+                .collection(config.database.collection.saving)
                 .findOne({
                     _id: new ObjectId(id)
                 })
@@ -19,12 +19,13 @@ class TagController {
             _res.status(500).send({errorCode: responseErrorCodes.UNKNOWN_ERROR})        }
     }
     async list(_req, _res) {
-        const filter = {}
-        if (_req.query.transactionID) filter.transactionsID = _req.query.transactionID
+        const filter = {
+            householdId: _req.query.householdId
+        }
         try {
             const result = await client
                 .db(config.database.name)
-                .collection(config.database.collection.tag)
+                .collection(config.database.collection.saving)
                 .find(filter).limit(_req.query.limit ? parseInt(_req.query.limit) : 0).toArray()
             return _res.send(result)
         } catch (exception) {
@@ -36,11 +37,11 @@ class TagController {
         try {
             const result = await client
                 .db(config.database.name)
-                .collection(config.database.collection.tag)
+                .collection(config.database.collection.saving)
                 .insertOne(data)
             const result2 = await client
                 .db(config.database.name)
-                .collection(config.database.collection.tag)
+                .collection(config.database.collection.saving)
                 .findOne({
                     _id: new ObjectId(result.insertedId)
                 })
@@ -56,7 +57,7 @@ class TagController {
         try {
             const result = await client
                 .db(config.database.name)
-                .collection(config.database.collection.tag)
+                .collection(config.database.collection.saving)
                 .updateOne({
                     _id: new ObjectId(id)
                 }, {
@@ -67,7 +68,7 @@ class TagController {
             }
             const result2 = await client
                 .db(config.database.name)
-                .collection(config.database.collection.tag)
+                .collection(config.database.collection.saving)
                 .findOne({
                     _id: new ObjectId(id)
                 })
@@ -80,7 +81,7 @@ class TagController {
         try {
             const result = await client
                 .db(config.database.name)
-                .collection(config.database.collection.tag)
+                .collection(config.database.collection.saving)
                 .deleteOne({
                     _id: new ObjectId(id)
                 })
@@ -92,4 +93,4 @@ class TagController {
             _res.status(500).send({errorCode: responseErrorCodes.UNKNOWN_ERROR})        }
     }
 }
-module.exports = new TagController()
+module.exports = new SavingController()
