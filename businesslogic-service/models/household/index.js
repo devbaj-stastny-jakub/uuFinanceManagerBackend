@@ -5,14 +5,6 @@ const {ThrowableError, buildErrorMessage, responseErrorCodes} = require("../../e
 const listModel = {
   type: "object",
   properties: {
-    limit: {
-      type: "string",
-    },
-    id: {
-      type: "string",
-      maxLength: 24,
-      minLength: 24,
-    },
   },
   additionalProperties: false,
 };

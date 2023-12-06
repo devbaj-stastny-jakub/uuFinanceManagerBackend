@@ -19,8 +19,9 @@ class TransactionController {
     }
 
     async list(_req, _res) {
-        const filter = {}
-        if (_req.query.parentId) filter.parentId = _req.query.parentId
+        const filter = {
+            parentId: _req.query.parentId,
+        }
         try {
             const result = await client
                 .db(config.database.name)
@@ -47,6 +48,7 @@ class TransactionController {
                 })
             return _res.send(result2)
         } catch (exception) {
+            console.log("test: ", exception)
             _res.status(500).send({errorCode: responseErrorCodes.UNKNOWN_ERROR})
         }
     }

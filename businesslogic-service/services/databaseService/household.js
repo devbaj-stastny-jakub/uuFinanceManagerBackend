@@ -1,16 +1,14 @@
 const axios = require('axios');
 
 class DatabaseServiceHousehold {
-    async list(limit = undefined, userId, data){
+    async list(userId){
         try{
             const result = await axios({
                 method: "GET",
                 url: "http://database-service-container:3002/household/list",
                 params: {
-                    limit: limit,
                     userId: userId
-                },
-                data: data
+                }
             })
             return result.data;
         } catch (e) {
@@ -22,7 +20,7 @@ class DatabaseServiceHousehold {
             const result = await axios({
                 method: "POST",
                 url: "http://database-service-container:3002/household/create",
-                data: {...data, ownerID: creatorId}
+                data: {...data, ownerId: creatorId}
             })
             return result.data;
         }
@@ -37,6 +35,7 @@ class DatabaseServiceHousehold {
                 url: "http://database-service-container:3002/household/" + householdId + "/patch",
                 data: data
             })
+            console.log("bruhj")
             return result.data;
         }
         catch (e) {
@@ -61,8 +60,7 @@ class DatabaseServiceHousehold {
             const result = await axios({
                 method: "GET",
                 url: "http://database-service-container:3002/household/" + householdId,
-            })             
-            console.log("test x")
+            })
             return result.data;
         }
         catch (e) {

@@ -1,17 +1,14 @@
 const axios = require("axios");
 
 class DatabaseServiceTransaction {
-    async list(limit = undefined, parentId = undefined, userId) {
+    async list(params) {
         try {
             const result = await axios({
                 method: "GET",
                 url: "http://database-service-container:3002/transaction/list",
-                params: {
-                    limit: limit,
-                    parentId: parentId,
-                    userId: userId
-                },
+                params: params
             })
+            console.log(result.request)
             return result.data
         } catch (e) {
             return e.response.data

@@ -9,7 +9,7 @@ class TransactionController {
         try {
             const data = _req.query;
             transactionValidator.listModel.validate(data)
-            const response = await databaseService.transaction.list(data.limit, data.parentId)
+            const response = await databaseService.transaction.list(data)
             if (response.errorCode) throw ThrowableError(buildErrorMessage(response.errorCode, this.objectName), undefined, 400)
             return _res.send(response);
         } catch (e) {
@@ -21,15 +21,21 @@ class TransactionController {
         try {
             const data = _req.body
             transactionValidator.createModel.validate(data)
-            //todo: parenta hledat v domácnostech a spočících cílech
-            const parentExists = await databaseService.transaction.get(data.parentId)
-            if (!parentExists) throw ThrowableError(buildErrorMessage(responseErrorCodes.NOT_FOUND, this.objectName, data.parentId), undefined, 400)
-            if (parentExists.errorCode) throw ThrowableError(buildErrorMessage(parentExists.errorCode, this.objectName, data.parentId), undefined, 400)
-            //todo: Doplnit id autentifikovaného uživatele
-            const transaction = await databaseService.transaction.create(data, "0YETAEBJMWBCIPL6HU8LHAW2")
+
+            let parent = await databaseService.household.get(data.parentId)
+            if (parent.errorCode) throw ThrowableError(buildErrorMessage(parent.errorCode, this.objectName, data.parentId), undefined, 400)
+
+            if(!parent) {
+                parent = await databaseService.saving.get(data.parentId)
+                if (parent.errorCode) throw ThrowableError(buildErrorMessage(parent.errorCode, this.objectName, data.parentId), undefined, 400)
+                if (!parent) throw ThrowableError(buildErrorMessage(responseErrorCodes.NOT_FOUND, "parent", data.parentId), undefined, 400)
+            }
+
+            const transaction = await databaseService.transaction.create(data, _req.auth.payload.sub)
             if (transaction.errorCode) throw new Error(undefined, {cause: buildErrorMessage(transaction.errorCode, this.objectName)})
             return _res.send(transaction)
         } catch (e) {
+            console.log(e)
             next(e)
         }
     }

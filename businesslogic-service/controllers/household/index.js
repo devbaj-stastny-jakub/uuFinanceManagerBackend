@@ -7,9 +7,7 @@ class HouseholdController {
 
   async list(_req, _res, next) {
     try {
-      const data = _req.query;
-      householdValidator.listModel.validate(data);
-      const response = await databaseService.household.list(data);
+      const response = await databaseService.household.list(_req.auth.payload.sub);
       if (response.errorCode) throw ThrowableError(buildErrorMessage(response.errorCode, this.objectName), undefined, 400);   
       return _res.send(response);
     } catch (e) {
@@ -33,7 +31,7 @@ class HouseholdController {
     try {
       const data = _req.body;
       householdValidator.createModel.validate(data);
-      const response = await databaseService.household.create(data);
+      const response = await databaseService.household.create(data, _req.auth.payload.sub);
       if (response.errorCode) throw new Error(undefined, {cause: buildErrorMessage(household.errorCode, this.objectName)})
       return _res.send(response);
   } catch (e) {
@@ -48,7 +46,7 @@ class HouseholdController {
       const data = _req.body;
       householdValidator.updateModel.validate(data);
       const response = await databaseService.household.update({...data, id: undefined}, data.id);
-      if (response.errorCode) throw ThrowableError(buildErrorMessage(response.errorCode, this.objectName), undefined, 400);
+      if (response.errorCode) throw ThrowableError(buildErrorMessage(response.errorCode, this.objectName, data.id), undefined, 400);
       return _res.send(response);
     } catch (e) {
       next(e)

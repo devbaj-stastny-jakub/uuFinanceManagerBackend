@@ -16,7 +16,7 @@ const listModel = {
             type: "string",
             maxLength: 24,
             minLength: 24
-        }
+        },
     },
     additionalProperties: false
 }

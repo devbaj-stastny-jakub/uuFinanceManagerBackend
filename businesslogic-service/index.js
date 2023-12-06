@@ -11,7 +11,7 @@ const port = 3001
 const { auth } = require('express-oauth2-jwt-bearer');
 
 const checkJwt = auth({
-    audience: 'http://localhost:300',
+    audience: 'http://uushoppinglist.com',
     issuerBaseURL: `https://dev-ducb3de5dqthsoxl.us.auth0.com/`,
 });
 
