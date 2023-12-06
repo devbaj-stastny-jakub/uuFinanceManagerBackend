@@ -2,6 +2,7 @@ const {client} = require("../../mongodb-connection")
 const config = require("../../config")
 const {ObjectId} = require("mongodb");
 const {responseErrorCodes} = require("../../errors")
+const moment = require("moment/moment");
 
 class SavingController {
 
@@ -19,26 +20,66 @@ class SavingController {
             _res.status(500).send({errorCode: responseErrorCodes.UNKNOWN_ERROR})        }
     }
     async list(_req, _res) {
-        const filter = {
-            householdId: _req.query.householdId
-        }
+        const userId = _req.query.userId
         try {
-            const result = await client
+            const results = await client
                 .db(config.database.name)
                 .collection(config.database.collection.saving)
-                .find(filter).limit(_req.query.limit ? parseInt(_req.query.limit) : 0).toArray()
-            return _res.send(result)
+                .find({
+                    householdId: _req.query.householdId
+                }).limit(_req.query.limit ? parseInt(_req.query.limit) : 0).toArray()
+            const authResults = []
+            for(let item of results) {
+                const authorized = await this.hasAuthorizedHousehold(_req.query.householdId, userId)
+                if(authorized) authResults.push(item)
+            }
+            return _res.send(authResults)
         } catch (exception) {
             _res.status(500).send({errorCode: responseErrorCodes.UNKNOWN_ERROR})
         }
     }
+    async hasAuthorizedHousehold(id, userId) {
+        console.log(id, userId)
+        const results = await client
+            .db(config.database.name)
+            .collection(config.database.collection.households)
+            .find({
+                $or: [
+                    {
+                        _id: new ObjectId(id),
+                        ownerId: userId
+                    },
+                    {
+                        _id: new ObjectId(id),
+                        membersIds: {
+                            $elemMatch: {
+                                $eq: userId
+                            }
+                        }
+                    }
+                ]
+            }).toArray()
+        console.log("res", results)
+        return !!results.length
+    }
+
     async create(_req, _res) {
         const data = _req.body
+        const defaultModel = {
+            name: 'New saving',
+            goal: 1,
+            description: "",
+            householdId: "",
+            currentBalance: 0,
+            createdAt: parseInt(moment().format("X")),
+            updatedAt: parseInt(moment().format("X")),
+            ...data,
+        };
         try {
             const result = await client
                 .db(config.database.name)
                 .collection(config.database.collection.saving)
-                .insertOne(data)
+                .insertOne(defaultModel)
             const result2 = await client
                 .db(config.database.name)
                 .collection(config.database.collection.saving)

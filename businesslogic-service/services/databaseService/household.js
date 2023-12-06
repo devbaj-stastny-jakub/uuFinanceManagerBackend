@@ -61,6 +61,7 @@ class DatabaseServiceHousehold {
                 method: "GET",
                 url: "http://database-service-container:3002/household/" + householdId,
             })
+            console.log(result.data)
             return result.data;
         }
         catch (e) {

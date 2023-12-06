@@ -23,7 +23,6 @@ class HouseholdController {
 
     async list(_req, _res) {
         const userId = _req.query.userId
-        console.log(userId)
         try {
             const result = await client
                 .db(config.database.name)

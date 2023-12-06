@@ -3,11 +3,11 @@ const axios = require("axios");
 const date = new Date();
 const timestamp = date.getTime()
 class DatabaseServiceSaving {
-    async get(id) {
+    async get(data) {
         try {
             const result = await axios({
                 method: "GET",
-                url: "http://database-service-container:3002/saving/" + id,
+                url: "http://database-service-container:3002/saving/" + data.id,
             })
             return result.data
         } catch (e) {
@@ -15,13 +15,14 @@ class DatabaseServiceSaving {
         }
     }
 
-    async list(parentId) {
+    async list(parentId, userId) {
         try {
             const result = await axios({
                 method: "GET",
                 url: "http://database-service-container:3002/saving/list",
                 params: {
-                    householdId: parentId
+                    householdId: parentId,
+                    userId: userId
                 },
             })
             return result.data

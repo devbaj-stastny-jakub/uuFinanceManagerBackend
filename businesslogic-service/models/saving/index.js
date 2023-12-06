@@ -1,7 +1,8 @@
 const Ajv = require("ajv")
+const {ThrowableError, buildErrorMessage, responseErrorCodes} = require("../../errors");
 const ajv = new Ajv()
 
-const findIdModel = {
+const identifierModel = {
     type: "string",
     minLength: 24,
     maxLength: 24,
@@ -32,23 +33,14 @@ const createModel = {
             minLength: 24,
             maxLength: 24
         },
-        savingName: {type: "string", minLength: 1},
-        goal: {type: "integer"},
+        name: {type: "string", minLength: 1},
+        goal: {type: "integer", exclusiveMinimum: 1},
         description: {type: "string", minLength: 1},
-        createdAt: {type: "string"},
-        updatedAt: {type: "string"},
-        currentBalance: {type: "integer"}
-
     },
-    required: ["savingName", "goal", "description", "householdId"],
+    required: ["name", "goal", "householdId"],
     additionalProperties: false,
 };
 
-const deleteModel = {
-    type: "string",
-    minLength: 24,
-    maxLength: 24,
-};
 const updateModel = {
     type: "object",
     properties: {
@@ -57,7 +49,7 @@ const updateModel = {
             minLength: 24,
             maxLength: 24
         },
-        savingName: {type: "string", minLength: 1},
+        name: {type: "string", minLength: 1},
         goal: {type: "integer"},
         description: {type: "string", minLength: 1},
     },
@@ -65,21 +57,26 @@ const updateModel = {
     additionalProperties: false
 };
 
+const handleValidation = (model, data)=>{
+    const validate = ajv.compile(model)
+    const valid = validate(data)
+    if(!valid) {
+        throw ThrowableError(buildErrorMessage(responseErrorCodes.VALIDATION_ERROR, validate.errors[0].message), undefined, 400)
+    }
+}
+
 module.exports = {
-    findIdModel: {
-        validate: ajv.compile(findIdModel)
-    },
     listModel: {
-        validate: ajv.compile(listModel)
+        validate: (data)=>{handleValidation(listModel, data)},
     },
     createModel: {
-        validate: ajv.compile(createModel),
-    },
-    deleteModel: {
-        validate: ajv.compile(deleteModel)
+        validate: (data)=>{handleValidation(createModel, data)},
     },
     updateModel: {
-        validate: ajv.compile(updateModel)
+        validate: (data)=>{handleValidation(updateModel, data)},
+    },
+    identifierModel: {
+        validate: (data)=>{handleValidation(identifierModel, data)},
     }
 }
 
