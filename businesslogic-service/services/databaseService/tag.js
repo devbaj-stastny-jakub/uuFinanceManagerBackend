@@ -1,11 +1,12 @@
 const axios = require("axios");
+import {config} from "../../config";
 
 class DatabaseServiceTag {
     async list(tagID) {
         try {
             const result = await axios({
                 method: "GET",
-                url: "http://database-service-container:3002/tag/list",
+                url: config.databaseServiceUrl + "/tag/list",
                 params: {
                     transactionID:tagID
                 },
@@ -20,7 +21,7 @@ class DatabaseServiceTag {
         try {
             const result = await axios({
                 method: "DELETE",
-                url: "http://database-service-container:3002/tag/" + tagId + "/delete",
+                url: config.databaseServiceUrl + "/tag/" + tagId + "/delete",
             })
             return result.data
         } catch (e) {
@@ -32,7 +33,7 @@ class DatabaseServiceTag {
         try {
             const result = await axios({
                 method: "PATCH",
-                url: "http://database-service-container:3002/tag/" + tagId + "/update",
+                url: config.databaseServiceUrl + "/tag/" + tagId + "/update",
                 data: data
             })
             return result.data
@@ -45,7 +46,7 @@ class DatabaseServiceTag {
         try {
             const result = await axios({
                 method: "GET",
-                url: "http://database-service-container:3002/tag/" + tagId,
+                url: config.databaseServiceUrl + "/tag/" + tagId,
             })
             return result.data
         } catch (e) {
@@ -57,7 +58,7 @@ class DatabaseServiceTag {
         try {
             const result = await axios({
                 method: "POST",
-                url: "http://database-service-container:3002/tag/create",
+                url: config.databaseServiceUrl + "/tag/create",
                 data: {...data, authorId}
             })
             return result.data

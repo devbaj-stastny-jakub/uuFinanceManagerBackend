@@ -1,6 +1,6 @@
 const config = {
     database: {
-        uri: "mongodb://mongodb-container:27017/mydb",
+        uri: "mongodb+srv://administrator:1234@uufinancemanager.qam5yl6.mongodb.net/db?retryWrites=true&w=majority",
         name: "mydb",
         collection: {
             transactions: "transactions",

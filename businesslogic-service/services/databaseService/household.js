@@ -1,11 +1,12 @@
 const axios = require('axios');
+import {config} from "../../config";
 
 class DatabaseServiceHousehold {
     async list(userId){
         try{
             const result = await axios({
                 method: "GET",
-                url: "http://database-service-container:3002/household/list",
+                url: config.databaseServiceUrl + "/household/list",
                 params: {
                     userId: userId
                 }
@@ -19,7 +20,7 @@ class DatabaseServiceHousehold {
         try {
             const result = await axios({
                 method: "POST",
-                url: "http://database-service-container:3002/household/create",
+                url: config.databaseServiceUrl + "/household/create",
                 data: {...data, ownerId: creatorId}
             })
             return result.data;
@@ -32,7 +33,7 @@ class DatabaseServiceHousehold {
         try {
             const result = await axios({
                 method: "PATCH",
-                url: "http://database-service-container:3002/household/" + householdId + "/patch",
+                url: config.databaseServiceUrl + "/household/" + householdId + "/patch",
                 data: data
             })
             console.log("bruhj")
@@ -47,7 +48,7 @@ class DatabaseServiceHousehold {
         try {
             const result = await axios({
                 method: "DELETE",
-                url: "http://database-service-container:3002/household/" + householdId + "/delete",
+                url: config.databaseServiceUrl + "/household/" + householdId + "/delete",
             })
             return result.data;
         }
@@ -59,7 +60,7 @@ class DatabaseServiceHousehold {
         try {
             const result = await axios({
                 method: "GET",
-                url: "http://database-service-container:3002/household/" + householdId,
+                url: config.databaseServiceUrl + "/household/" + householdId,
             })
             console.log(result.data)
             return result.data;

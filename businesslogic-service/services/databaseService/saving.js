@@ -1,13 +1,12 @@
 const axios = require("axios");
+import {config} from "../../config";
 
-const date = new Date();
-const timestamp = date.getTime()
 class DatabaseServiceSaving {
     async get(data) {
         try {
             const result = await axios({
                 method: "GET",
-                url: "http://database-service-container:3002/saving/" + data.id,
+                url: config.databaseServiceUrl + "/saving/" + data.id,
             })
             return result.data
         } catch (e) {
@@ -19,7 +18,7 @@ class DatabaseServiceSaving {
         try {
             const result = await axios({
                 method: "GET",
-                url: "http://database-service-container:3002/saving/list",
+                url: config.databaseServiceUrl + "/saving/list",
                 params: {
                     householdId: parentId,
                     userId: userId
@@ -34,7 +33,7 @@ class DatabaseServiceSaving {
         try {
             const result = await axios({
                 method: "POST",
-                url: "http://database-service-container:3002/saving/create",
+                url: config.databaseServiceUrl + "/saving/create",
                 data: data
             })
             return result.data
@@ -47,7 +46,7 @@ class DatabaseServiceSaving {
         try {
             const result = await axios({
                 method: "PATCH",
-                url: "http://database-service-container:3002/saving/" + data.id + "/update",
+                url: config.databaseServiceUrl + "/saving/" + data.id + "/update",
                 data: {...data, id: undefined}
             })
             return result.data
@@ -60,7 +59,7 @@ class DatabaseServiceSaving {
         try {
             const result = await axios({
                 method: "DELETE",
-                url: "http://database-service-container:3002/saving/" + id + "/delete",
+                url: config.databaseServiceUrl + "/saving/" + id + "/delete",
             })
             return result.data
         } catch (e) {

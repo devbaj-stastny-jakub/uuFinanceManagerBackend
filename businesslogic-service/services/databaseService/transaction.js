@@ -1,11 +1,12 @@
 const axios = require("axios");
+import {config} from "../../config";
 
 class DatabaseServiceTransaction {
     async list(params) {
         try {
             const result = await axios({
                 method: "GET",
-                url: "http://database-service-container:3002/transaction/list",
+                url: config.databaseServiceUrl + "/transaction/list",
                 params: params
             })
             console.log(result.request)
@@ -19,7 +20,7 @@ class DatabaseServiceTransaction {
         try {
             const result = await axios({
                 method: "DELETE",
-                url: "http://database-service-container:3002/transaction/" + transactionId + "/delete",
+                url: config.databaseServiceUrl + "/transaction/" + transactionId + "/delete",
             })
             return result.data
         } catch (e) {
@@ -31,7 +32,7 @@ class DatabaseServiceTransaction {
         try {
             const result = await axios({
                 method: "PATCH",
-                url: "http://database-service-container:3002/transaction/" + transactionId + "/update",
+                url: config.databaseServiceUrl + "/transaction/" + transactionId + "/update",
                 data: data
             })
             return result.data
@@ -44,7 +45,7 @@ class DatabaseServiceTransaction {
         try {
             const result = await axios({
                 method: "GET",
-                url: "http://database-service-container:3002/transaction/" + transactionId,
+                url: config.databaseServiceUrl + "/transaction/" + transactionId,
             })
             return result.data
         } catch (e) {
@@ -56,7 +57,7 @@ class DatabaseServiceTransaction {
         try {
             const result = await axios({
                 method: "POST",
-                url: "http://database-service-container:3002/transaction/create",
+                url: config.databaseServiceUrl + "/transaction/create",
                 data: {...data, creatorId}
             })
             return result.data
