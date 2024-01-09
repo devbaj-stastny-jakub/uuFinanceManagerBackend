@@ -1,4 +1,5 @@
 const express = require('express')
+const cors = require('cors')
 const transactionRouter = require("./routes/transaction")
 const householdRouter = require("./routes/household")
 const tagRouter = require("./routes/tag")
@@ -6,6 +7,7 @@ const savingRouter = require("./routes/saving")
 const {handleError} = require("./middlewares")
 
 const app = express()
+app.use(cors())
 const port = 3001
 
 const { auth } = require('express-oauth2-jwt-bearer');
