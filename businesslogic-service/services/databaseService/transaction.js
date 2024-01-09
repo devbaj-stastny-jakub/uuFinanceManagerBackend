@@ -1,5 +1,5 @@
 const axios = require("axios");
-import {config} from "../../config";
+const {config} = require("../../config");
 
 class DatabaseServiceTransaction {
     async list(params) {
