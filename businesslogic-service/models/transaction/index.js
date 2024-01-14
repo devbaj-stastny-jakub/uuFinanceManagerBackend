@@ -21,6 +21,21 @@ const listModel = {
     additionalProperties: false
 }
 
+const analyzeModel = {
+    type: "object",
+    properties: {
+        period: {
+            type: "string",
+        },
+        parentId: {
+            type: "string",
+            maxLength: 24,
+            minLength: 24
+        },
+    },
+    additionalProperties: false
+}
+
 const createModel = {
     type: "object",
     properties: {
@@ -89,6 +104,9 @@ const handleValidation = (model, data)=>{
 }
 
 module.exports = {
+    analyzeModel: {
+        validate: (data)=>{handleValidation(analyzeModel, data)},
+    },
     listModel: {
         validate: (data)=>{handleValidation(listModel, data)},
     },

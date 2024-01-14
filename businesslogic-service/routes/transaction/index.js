@@ -7,6 +7,11 @@ router.get("/list", async (_req, _res, next)=>{
     await transactionController.list(_req, _res, next)
 })
 
+//? /transaction/analyze
+router.get("/analyze", async (_req, _res, next)=>{
+    await transactionController.analyze(_req, _res, next)
+})
+
 //? /transaction/:id
 router.get("/:id", async (_req, _res, next)=>{
     await transactionController.get(_req, _res, next)

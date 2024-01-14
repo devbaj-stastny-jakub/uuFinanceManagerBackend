@@ -17,6 +17,18 @@ class TransactionController {
         }
     }
 
+    async analyze(_req, _res, next) {
+        try {
+            const data = _req.query;
+            transactionValidator.analyzeModel.validate(data)
+            const response = await databaseService.transaction.analyze(data)
+            if (response.errorCode) throw ThrowableError(buildErrorMessage(response.errorCode, this.objectName), undefined, 400)
+            return _res.send(response);
+        } catch (e) {
+            next(e)
+        }
+    }
+
     async create(_req, _res, next) {
         try {
             const data = _req.body
