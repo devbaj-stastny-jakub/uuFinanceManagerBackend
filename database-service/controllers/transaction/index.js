@@ -84,7 +84,8 @@ class TransactionController {
 		let data = _req.body;
 		data = {
 			...data,
-			createdAt: new Date(),
+			createdAt:parseInt(moment().format("X")),
+			updatedAt:parseInt(moment().format("X")),
 		};
 		try {
 			const result = await client.db(config.database.name).collection(config.database.collection.transactions).insertOne(data);

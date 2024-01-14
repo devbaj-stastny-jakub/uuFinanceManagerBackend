@@ -56,6 +56,8 @@ class HouseholdController {
                 ownerId: "",
                 membersIds: [],
                 balance: 0,
+                expenses: 0,
+                incomes: 0,
                 createdAt: parseInt(moment().format("X")),
                 updatedAt: parseInt(moment().format("X")),
                 ...data,

@@ -15,6 +15,12 @@ const createModel = {
     name: {
       type: "string",
     },
+    expenses: {
+      type: "number"
+    },
+    incomes: {
+      type: "number"
+    },
   },
   required: ["name"],
   additionalProperties: false,
@@ -43,6 +49,12 @@ const updateModel = {
       type: "string",
       maxLength: 24,
       minLength: 24,
+    },
+    expenses: {
+      type: "number"
+    },
+    incomes: {
+      type: "number"
     },
     membersIDs: {
       type: "array",
