@@ -8,6 +8,9 @@ router.post("/create", async (_req, _res) => {
 router.get("/list", async (_req, _res) => {
     await transactionController.list(_req, _res)
 })
+router.get("/analyze", async (_req, _res) => {
+    await transactionController.analyze(_req, _res)
+})
 router.get("/:id", async (_req, _res) => {
    await transactionController.get(_req, _res)
 })
