@@ -26,7 +26,7 @@ class TransactionController {
             if (parent.errorCode) throw ThrowableError(buildErrorMessage(parent.errorCode, this.objectName, data.parentId), undefined, 400)
 
             if(!parent) {
-                parent = await databaseService.saving.get(data.parentId)
+                parent = await databaseService.saving.get({id: data.parentId})
                 if (parent.errorCode) throw ThrowableError(buildErrorMessage(parent.errorCode, this.objectName, data.parentId), undefined, 400)
                 if (!parent) throw ThrowableError(buildErrorMessage(responseErrorCodes.NOT_FOUND, "parent", data.parentId), undefined, 400)
             }
