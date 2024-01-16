@@ -3,6 +3,7 @@ const config = require('../../config');
 const { ObjectId } = require('mongodb');
 const { responseErrorCodes } = require('../../errors');
 const { calculateAnalyticsForYearPeriod, calculateAnalyticsForDaysPeriod } = require('./methods');
+const moment = require("moment")
 
 class TransactionController {
 	async get(_req, _res) {
@@ -22,7 +23,7 @@ class TransactionController {
 
 	async analyze(_req, _res) {
 		try {
-            const period = _req.query.period
+			const period = _req.query.period;
 			const dataset = await client
 				.db(config.database.name)
 				.collection(config.database.collection.transactions)
@@ -35,27 +36,27 @@ class TransactionController {
 							as: 'hasCounterPart',
 						},
 					},
-                    {
-                        $match: {
-                            parentId: _req.query.parentId,
-                            hasCounterPart: []
-                        }
-                    }
+					{
+						$match: {
+							parentId: _req.query.parentId,
+							hasCounterPart: [],
+						},
+					},
 				])
 				.toArray();
-            const periodValues = {
-                "unlimited": undefined,
-                "week": 7,
-                "month": 30,
-                "qartal": 90
-            }
-            const periodMethods = {
-                "unlimited": calculateAnalyticsForYearPeriod,
-                "week": calculateAnalyticsForDaysPeriod,
-                "month": calculateAnalyticsForDaysPeriod,
-                "qartal": calculateAnalyticsForDaysPeriod,
-            }
-            const results = periodMethods[period](dataset, periodValues[period])
+			const periodValues = {
+				unlimited: undefined,
+				week: 7,
+				month: 30,
+				qartal: 90,
+			};
+			const periodMethods = {
+				unlimited: calculateAnalyticsForYearPeriod,
+				week: calculateAnalyticsForDaysPeriod,
+				month: calculateAnalyticsForDaysPeriod,
+				qartal: calculateAnalyticsForDaysPeriod,
+			};
+			const results = periodMethods[period](dataset, periodValues[period]);
 			return _res.send(results);
 		} catch (exception) {
 			console.log(exception);
@@ -83,9 +84,14 @@ class TransactionController {
 	async create(_req, _res) {
 		let data = _req.body;
 		data = {
+			parentId: null,
+			tags: [],
+			value: 0,
+			description: null,
+			counterpartId: null,
 			...data,
-			createdAt:parseInt(moment().format("X")),
-			updatedAt:parseInt(moment().format("X")),
+			createdAt: parseInt(moment().format('X')),
+			updatedAt: parseInt(moment().format('X')),
 		};
 		try {
 			const result = await client.db(config.database.name).collection(config.database.collection.transactions).insertOne(data);

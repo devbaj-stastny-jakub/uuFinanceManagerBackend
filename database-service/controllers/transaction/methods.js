@@ -30,6 +30,7 @@ const calculateAnalyticsForYearPeriod = (transactions) => {
 	});
 	return final;
 };
+
 const calculateAnalyticsForDaysPeriod = (transactions, days) => {
 	// Create an object to store the balances for each day
 	const dailyBalances = {};

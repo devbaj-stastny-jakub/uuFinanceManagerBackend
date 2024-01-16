@@ -7,6 +7,10 @@ router.get("/list", async (_req, _res, next) => {
     await householdController.list(_req, _res, next);
 });
 
+router.get("/statistics", async (_req, _res, next) => {
+    await householdController.statistics(_req, _res, next);
+});
+
 router.get("/:id", async (_req, _res, next) => {
     await householdController.get(_req, _res, next);
 });

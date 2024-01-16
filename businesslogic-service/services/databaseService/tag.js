@@ -2,14 +2,12 @@ const axios = require("axios");
 const config = require("../../config");
 
 class DatabaseServiceTag {
-    async list(tagID) {
+    async list(params) {
         try {
             const result = await axios({
                 method: "GET",
                 url: config.databaseServiceUrl + "/tag/list",
-                params: {
-                    transactionID:tagID
-                },
+                params
             })
             return result.data
         } catch (e) {

@@ -15,6 +15,18 @@ class HouseholdController {
     }
   }
 
+  async statistics(_req, _res, next) {
+    try {
+      const data = _req.query
+      householdValidator.statisticsModel.validate(data);
+
+      const statistics = await databaseService.household.statistics(data)
+      return _res.send(statistics)
+    } catch (e) {
+      next(e)
+    }
+  }
+
   async get(_req, _res, next) {
     try {
       const data = _req.params.id;
@@ -37,8 +49,6 @@ class HouseholdController {
   } catch (e) {
     next(e)
   }
-
-  
 
   }
   async update(_req, _res, next) {

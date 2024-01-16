@@ -19,13 +19,15 @@ class TagController {
             _res.status(500).send({errorCode: responseErrorCodes.UNKNOWN_ERROR})        }
     }
     async list(_req, _res) {
-        const filter = {}
-        if (_req.query.transactionID) filter.transactionsID = _req.query.transactionID
+        const filter = {
+            householdId: _req.query.householdId
+        }
+        console.log(filter)
         try {
             const result = await client
                 .db(config.database.name)
                 .collection(config.database.collection.tag)
-                .find(filter).limit(_req.query.limit ? parseInt(_req.query.limit) : 0).toArray()
+                .find(filter).toArray()
             return _res.send(result)
         } catch (exception) {
             _res.status(500).send({errorCode: responseErrorCodes.UNKNOWN_ERROR})

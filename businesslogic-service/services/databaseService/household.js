@@ -16,6 +16,18 @@ class DatabaseServiceHousehold {
             return e.response.data;
         }
     }
+    async statistics(params) {
+        try{
+            const result = await axios({
+                method: "GET",
+                url: config.databaseServiceUrl + "/household/statistics",
+                params
+            })
+            return result.data;
+        } catch (e) {
+            return e.response.data;
+        }
+    }
     async create(data, creatorId){
         try {
             const result = await axios({
