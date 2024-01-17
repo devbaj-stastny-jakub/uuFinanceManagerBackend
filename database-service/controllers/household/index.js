@@ -151,7 +151,16 @@ class HouseholdController {
 						},
 					},
 					{
+						$lookup: {
+							from: 'transactions',
+							localField: '_id',
+							foreignField: 'counterpartId',
+							as: 'hasCounterPart',
+						},
+					},
+					{
 						$match: {
+							hasCounterPart: [],
 							value: filter.positive ? { $gt: 0 } : { $lt: 0 },
 							...(filter.parent ? { parentId: filter.parent } : {}),
 							...(filter.creator ? { creatorId: filter.creator } : {}),
