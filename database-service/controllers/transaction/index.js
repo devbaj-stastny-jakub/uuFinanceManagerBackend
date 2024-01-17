@@ -31,6 +31,11 @@ class TransactionController {
 				.collection(config.database.collection.transactions)
 				.aggregate([
 					{
+						$sort: {
+							createdAt: 1
+						}
+					},
+					{
 						$lookup: {
 							from: 'transactions',
 							localField: '_id',
