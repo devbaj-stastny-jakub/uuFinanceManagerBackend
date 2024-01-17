@@ -137,15 +137,6 @@ class HouseholdController {
 			period: data.period ? Number(data.period) : undefined,
 			tag: data.tagId,
 		};
-		console.log({
-			$match: {
-				value: filter.positive ? { $gt: 0 } : { $lt: 0 },
-				...(filter.parent ? { parentId: filter.parent } : {}),
-				...(filter.creator ? { creatorId: filter.creator } : {}),
-				...(filter.tag ? { tags: { $elemMatch: new ObjectId(filter.tag) } } : {}),
-				...(filter.period ? { createdAt: { $gte: Math.floor((Date.now() - filter.period * 24 * 60 * 60 * 1000) / 1000) } } : {}),
-			},
-		});
 		try {
 			const result = await client
 				.db(config.database.name)

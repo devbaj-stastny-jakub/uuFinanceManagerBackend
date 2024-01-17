@@ -2,10 +2,10 @@ const { client } = require('../../mongodb-connection');
 const config = require('../../config');
 const { ObjectId } = require('mongodb');
 const { responseErrorCodes } = require('../../errors');
-const householdController = require("../household")
+const householdController = require('../household');
 
 const { calculateAnalyticsForYearPeriod, calculateAnalyticsForDaysPeriod } = require('./methods');
-const moment = require("moment")
+const moment = require('moment');
 
 class TransactionController {
 	async get(_req, _res) {
@@ -32,8 +32,8 @@ class TransactionController {
 				.aggregate([
 					{
 						$sort: {
-							createdAt: 1
-						}
+							createdAt: 1,
+						},
 					},
 					{
 						$lookup: {
@@ -100,8 +100,12 @@ class TransactionController {
 			createdAt: parseInt(moment().format('X')),
 			updatedAt: parseInt(moment().format('X')),
 		};
+		data.tags = data.tags.map((tag) => new ObjectId(tag));
 		try {
-			const result = await client.db(config.database.name).collection(config.database.collection.transactions).insertOne(data);
+			const result = await client
+				.db(config.database.name)
+				.collection(config.database.collection.transactions)
+				.insertOne(data);
 			const result2 = await client
 				.db(config.database.name)
 				.collection(config.database.collection.transactions)
@@ -113,7 +117,7 @@ class TransactionController {
 			console.log('test: ', exception);
 			_res.status(500).send({ errorCode: responseErrorCodes.UNKNOWN_ERROR });
 		} finally {
-			householdController.updateBalance(data.parentId)
+			householdController.updateBalance(data.parentId);
 		}
 	}
 
@@ -141,7 +145,7 @@ class TransactionController {
 				.findOne({
 					_id: new ObjectId(id),
 				});
-			householdController.updateBalance(result2.parentId)
+			householdController.updateBalance(result2.parentId);
 			return _res.send(result2);
 		} catch (exception) {
 			_res.status(500).send({ errorCode: responseErrorCodes.UNKNOWN_ERROR });

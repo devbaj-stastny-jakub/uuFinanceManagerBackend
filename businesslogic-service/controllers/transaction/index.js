@@ -1,5 +1,6 @@
 const databaseService = require('../../services/databaseService');
 const transactionValidator = require('../../models/transaction');
+const getIsAuthorized = require('../../helper/auth');
 const { responseErrorCodes, ErrorMessage, buildErrorMessage, ThrowableError } = require('../../errors');
 
 class TransactionController {
