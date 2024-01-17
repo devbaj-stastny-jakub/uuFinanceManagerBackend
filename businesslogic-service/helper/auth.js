@@ -2,7 +2,6 @@ const databaseService = require('../services/databaseService');
 
 const getIsAuthorized = async (userId, householdId, roles) => {
 	const household = await databaseService.household.get(householdId);
-	console.log(userId)
 	let profile = null;
 	let authorized = false;
 	if (household.ownerId === userId) profile = 'owner';
@@ -11,4 +10,4 @@ const getIsAuthorized = async (userId, householdId, roles) => {
 	return authorized;
 };
 
-module.exports = getIsAuthorized
+module.exports = getIsAuthorized;
