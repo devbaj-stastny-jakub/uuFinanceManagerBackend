@@ -53,20 +53,11 @@ class HouseholdController {
 					.collection(config.database.collection.transactions)
 					.aggregate([
 						{
-							$lookup: {
-								from: 'transactions',
-								localField: '_id',
-								foreignField: 'counterpartId',
-								as: 'hasCounterPart',
-							},
-						},
-						{
 							$match: {
 								parentId: id,
 								value: {
 									$gte: 0,
 								},
-								hasCounterPart: [],
 							},
 						},
 						{
@@ -77,7 +68,7 @@ class HouseholdController {
 						},
 					])
 					.toArray();
-				inValue = incomes[0].totalValue;
+				incomes.length > 0 && (inValue = incomes[0].totalValue);
 				let outcomes = await client
 					.db(config.database.name)
 					.collection(config.database.collection.transactions)
@@ -107,8 +98,9 @@ class HouseholdController {
 						},
 					])
 					.toArray();
-				outValue = outcomes[0].totalValue;
+				outcomes.length > 0 && (outValue = outcomes[0].totalValue);
 			}
+			console.log(inValue, outValue);
 			await client
 				.db(config.database.name)
 				.collection(config.database.collection[isHousehold ? 'households' : 'saving'])
@@ -165,7 +157,13 @@ class HouseholdController {
 							...(filter.parent ? { parentId: filter.parent } : {}),
 							...(filter.creator ? { creatorId: filter.creator } : {}),
 							...(filter.tag ? { tags: { $elemMatch: { _id: new ObjectId(filter.tag) } } } : {}),
-							...(filter.period ? { createdAt: { $gte: Math.floor((Date.now() - filter.period * 24 * 60 * 60 * 1000) / 1000) } } : {}),
+							...(filter.period
+								? {
+										createdAt: {
+											$gte: Math.floor((Date.now() - filter.period * 24 * 60 * 60 * 1000) / 1000),
+										},
+								  }
+								: {}),
 						},
 					},
 					{
@@ -226,7 +224,10 @@ class HouseholdController {
 				updatedAt: parseInt(moment().format('X')),
 				...data,
 			};
-			const result = await client.db(config.database.name).collection(config.database.collection.households).insertOne(defaultModel);
+			const result = await client
+				.db(config.database.name)
+				.collection(config.database.collection.households)
+				.insertOne(defaultModel);
 			const result2 = await client
 				.db(config.database.name)
 				.collection(config.database.collection.households)

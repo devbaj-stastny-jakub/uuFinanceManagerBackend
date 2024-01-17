@@ -36,17 +36,8 @@ class TransactionController {
 						},
 					},
 					{
-						$lookup: {
-							from: 'transactions',
-							localField: '_id',
-							foreignField: 'counterpartId',
-							as: 'hasCounterPart',
-						},
-					},
-					{
 						$match: {
 							parentId: _req.query.parentId,
-							hasCounterPart: [],
 						},
 					},
 				])
@@ -146,6 +137,7 @@ class TransactionController {
 				.findOne({
 					_id: new ObjectId(id),
 				});
+			console.log(result2)
 			householdController.updateBalance(result2.parentId);
 			return _res.send(result2);
 		} catch (exception) {
