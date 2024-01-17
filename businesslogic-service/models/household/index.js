@@ -74,8 +74,6 @@ const updateModel = {
 		},
 		ownerId: {
 			type: 'string',
-			maxLength: 24,
-			minLength: 24,
 		},
 		expenses: {
 			type: 'number',
@@ -87,8 +85,6 @@ const updateModel = {
 			type: 'array',
 			items: {
 				type: 'string',
-				maxLength: 24,
-				minLength: 24,
 			},
 		},
 		balance: {
