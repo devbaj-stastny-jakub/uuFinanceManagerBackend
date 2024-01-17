@@ -72,7 +72,7 @@ const updateModel = {
 			maxLength: 24,
 			minLength: 24,
 		},
-		ownerID: {
+		ownerId: {
 			type: 'string',
 			maxLength: 24,
 			minLength: 24,
@@ -83,7 +83,7 @@ const updateModel = {
 		incomes: {
 			type: 'number',
 		},
-		membersIDs: {
+		membersIds: {
 			type: 'array',
 			items: {
 				type: 'string',

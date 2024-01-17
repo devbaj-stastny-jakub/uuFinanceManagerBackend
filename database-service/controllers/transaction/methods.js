@@ -1,27 +1,21 @@
 const moment = require('moment/moment');
 
 const calculateAnalyticsForYearPeriod = (transactions) => {
-	// Create an object to store the balances for each month
 	const monthlyBalances = {};
 
-	// Initialize the previousBalance variable
 	let previousBalance = 0;
 
-	// Iterate through transactions
 	transactions.forEach((transaction) => {
 		// Extract year and month from the createdAt field
 		const date = new Date(Number(transaction.createdAt) * 1000);
 		const yearMonth = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}`;
 
-		// Initialize the balance for the month if it doesn't exist
 		if (!monthlyBalances[yearMonth]) {
 			monthlyBalances[yearMonth] = 0;
 		}
 
-		// Add the transaction value to the balance for the month, considering the previous month's balance
 		monthlyBalances[yearMonth] = previousBalance + transaction.value;
 
-		// Update the previousBalance for the next iteration
 		previousBalance = monthlyBalances[yearMonth];
 	});
 	let final = [];
@@ -32,13 +26,10 @@ const calculateAnalyticsForYearPeriod = (transactions) => {
 };
 
 const calculateAnalyticsForDaysPeriod = (transactions, days) => {
-	// Create an object to store the balances for each day
 	const dailyBalances = {};
 
-	// Initialize the previousBalance variable
 	let previousBalance = 0;
 
-	// Iterate through transactions
 	transactions.forEach((transaction) => {
 		// Extract date and time from the createdAt field
 		const date = new Date(Number(transaction.createdAt) * 1000);
