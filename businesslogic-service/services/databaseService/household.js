@@ -48,7 +48,6 @@ class DatabaseServiceHousehold {
                 url: config.databaseServiceUrl + "/household/" + householdId + "/patch",
                 data: data
             })
-            console.log("bruhj")
             return result.data;
         }
         catch (e) {
@@ -74,7 +73,6 @@ class DatabaseServiceHousehold {
                 method: "GET",
                 url: config.databaseServiceUrl + "/household/" + householdId,
             })
-            console.log(result.data)
             return result.data;
         }
         catch (e) {

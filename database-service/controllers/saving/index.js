@@ -39,7 +39,6 @@ class SavingController {
         }
     }
     async hasAuthorizedHousehold(id, userId) {
-        console.log(id, userId)
         const results = await client
             .db(config.database.name)
             .collection(config.database.collection.households)
@@ -59,7 +58,6 @@ class SavingController {
                     }
                 ]
             }).toArray()
-        console.log("res", results)
         return !!results.length
     }
 

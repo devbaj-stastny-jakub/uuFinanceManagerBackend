@@ -22,7 +22,6 @@ class TagController {
         const filter = {
             householdId: _req.query.householdId
         }
-        console.log(filter)
         try {
             const result = await client
                 .db(config.database.name)
