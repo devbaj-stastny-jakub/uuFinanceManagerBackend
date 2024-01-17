@@ -28,7 +28,8 @@ const statisticsModel = {
 			type: 'string',
 		},
 		positive: {
-			type: 'string'
+			type: 'string',
+			enum: ["true", "false"],
 		}
 	},
 	required: ['parentId'],
@@ -104,7 +105,14 @@ const handleValidation = (model, data) => {
 	const validate = ajv.compile(model);
 	const valid = validate(data);
 	if (!valid) {
-		throw ThrowableError(buildErrorMessage(responseErrorCodes.VALIDATION_ERROR, validate.errors[0].message), undefined, 400);
+		throw ThrowableError(
+			buildErrorMessage(
+				responseErrorCodes.VALIDATION_ERROR,
+				`${validate.errors[0].message} - ${(validate.errors[0].params[Object.keys(validate.errors[0].params)[0]]).toString()}`
+			),
+			undefined,
+			400
+		);
 	}
 };
 
