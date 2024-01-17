@@ -2,6 +2,8 @@ const { client } = require('../../mongodb-connection');
 const config = require('../../config');
 const { ObjectId } = require('mongodb');
 const { responseErrorCodes } = require('../../errors');
+const householdController = require("../household")
+
 const { calculateAnalyticsForYearPeriod, calculateAnalyticsForDaysPeriod } = require('./methods');
 const moment = require("moment")
 
@@ -105,6 +107,8 @@ class TransactionController {
 		} catch (exception) {
 			console.log('test: ', exception);
 			_res.status(500).send({ errorCode: responseErrorCodes.UNKNOWN_ERROR });
+		} finally {
+			householdController.updateBalance(data.parentId)
 		}
 	}
 
@@ -132,6 +136,7 @@ class TransactionController {
 				.findOne({
 					_id: new ObjectId(id),
 				});
+			householdController.updateBalance(result2.parentId)
 			return _res.send(result2);
 		} catch (exception) {
 			_res.status(500).send({ errorCode: responseErrorCodes.UNKNOWN_ERROR });

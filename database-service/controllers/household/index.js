@@ -21,11 +21,118 @@ class HouseholdController {
 		}
 	}
 
+	async updateBalance(id) {
+		try {
+			const isHousehold = await client
+				.db(config.database.name)
+				.collection(config.database.collection.households)
+				.findOne({ _id: new ObjectId(id) });
+			let balance = await client
+				.db(config.database.name)
+				.collection(config.database.collection.transactions)
+				.aggregate([
+					{
+						$match: {
+							parentId: id,
+						},
+					},
+					{
+						$group: {
+							_id: '$parentId',
+							totalValue: { $sum: '$value' },
+						},
+					},
+				])
+				.toArray();
+			balance = balance[0].totalValue;
+			let inValue = undefined;
+			let outValue = undefined;
+			if (isHousehold) {
+				let incomes = await client
+					.db(config.database.name)
+					.collection(config.database.collection.transactions)
+					.aggregate([
+						{
+							$lookup: {
+								from: 'transactions',
+								localField: '_id',
+								foreignField: 'counterpartId',
+								as: 'hasCounterPart',
+							},
+						},
+						{
+							$match: {
+								parentId: id,
+								value: {
+									$gte: 0,
+								},
+								hasCounterPart: [],
+							},
+						},
+						{
+							$group: {
+								_id: '$parentId',
+								totalValue: { $sum: '$value' },
+							},
+						},
+					])
+					.toArray();
+				inValue = incomes[0].totalValue;
+				let outcomes = await client
+					.db(config.database.name)
+					.collection(config.database.collection.transactions)
+					.aggregate([
+						{
+							$lookup: {
+								from: 'transactions',
+								localField: '_id',
+								foreignField: 'counterpartId',
+								as: 'hasCounterPart',
+							},
+						},
+						{
+							$match: {
+								parentId: id,
+								value: {
+									$lte: 0,
+								},
+								hasCounterPart: [],
+							},
+						},
+						{
+							$group: {
+								_id: '$parentId',
+								totalValue: { $sum: '$value' },
+							},
+						},
+					])
+					.toArray();
+				outValue = outcomes[0].totalValue;
+			}
+			await client
+				.db(config.database.name)
+				.collection(config.database.collection[isHousehold ? 'households' : 'saving'])
+				.updateOne(
+					{
+						_id: new ObjectId(id),
+					},
+					{
+						$set: {
+							...(isHousehold ? { balance } : { currentBalance: balance }),
+							...(isHousehold ? { expenses: outValue, incomes: inValue } : {}),
+						},
+					}
+				);
+		} catch (exception) {
+			console.log(exception);
+		}
+	}
+
 	async statistics(_req, _res) {
 		const data = _req.query;
 		const filter = {
 			creator: data.userId,
-			positive: data.positive === "false" ? false : true,
+			positive: data.positive === 'false' ? false : true,
 			parent: data.parentId,
 			period: data.period ? Number(data.period) : undefined,
 			tag: data.tagId,
