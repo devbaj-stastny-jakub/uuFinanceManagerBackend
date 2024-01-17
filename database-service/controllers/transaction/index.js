@@ -95,11 +95,12 @@ class TransactionController {
 			tags: [],
 			value: 0,
 			description: null,
-			counterpartId: null,
 			...data,
+			counterpartId: data.counterpartId ? new ObjectId(data.counterpartId) : null,
 			createdAt: parseInt(moment().format('X')),
 			updatedAt: parseInt(moment().format('X')),
 		};
+
 		data.tags = data.tags.map((tag) => new ObjectId(tag));
 		try {
 			const result = await client
