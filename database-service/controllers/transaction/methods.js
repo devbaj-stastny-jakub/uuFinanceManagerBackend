@@ -10,7 +10,7 @@ const calculateAnalyticsForYearPeriod = (transactions) => {
 	// Iterate through transactions
 	transactions.forEach((transaction) => {
 		// Extract year and month from the createdAt field
-		const date = new Date(transaction.createdAt);
+		const date = new Date(Number(transaction.createdAt) * 1000);
 		const yearMonth = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}`;
 
 		// Initialize the balance for the month if it doesn't exist
@@ -41,7 +41,7 @@ const calculateAnalyticsForDaysPeriod = (transactions, days) => {
 	// Iterate through transactions
 	transactions.forEach((transaction) => {
 		// Extract date and time from the createdAt field
-		const date = new Date(transaction.createdAt);
+		const date = new Date(Number(transaction.createdAt) * 1000);
 		const yearMonthDay = date.toISOString().split('T')[0]; // Extracting only year-month-day
 
 		// Initialize the balance for the day if it doesn't exist
