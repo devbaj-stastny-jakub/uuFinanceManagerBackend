@@ -33,16 +33,14 @@ class TransactionController {
         try {
             const data = _req.body
             transactionValidator.createModel.validate(data)
-
             let parent = await databaseService.household.get(data.parentId)
             if (parent.errorCode) throw ThrowableError(buildErrorMessage(parent.errorCode, this.objectName, data.parentId), undefined, 400)
-
             if(!parent) {
                 parent = await databaseService.saving.get({id: data.parentId})
                 if (parent.errorCode) throw ThrowableError(buildErrorMessage(parent.errorCode, this.objectName, data.parentId), undefined, 400)
                 if (!parent) throw ThrowableError(buildErrorMessage(responseErrorCodes.NOT_FOUND, "parent", data.parentId), undefined, 400)
             }
-
+            if (!(await getIsAuthorized(_req.auth?.payload.sub, parent.ownerId ? data.parentId : parent.householdId, ['owner', 'member']))) throw ThrowableError(buildErrorMessage(responseErrorCodes.NOT_AUTHORIZED, "household", parent.ownerId ? data.parentId : parent.householdId), undefined, 401);
             const transaction = await databaseService.transaction.create(data, _req.auth.payload.sub)
             if (transaction.errorCode) throw new Error(undefined, {cause: buildErrorMessage(transaction.errorCode, this.objectName)})
             return _res.send(transaction)
